@@ -103,6 +103,23 @@ function SafeImage({ src, alt, className = "", fallbackType }: SafeImageProps) {
 }
 
 export default function App() {
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('theme');
+      return (saved as 'light' | 'dark') || 'light';
+    }
+    return 'light';
+  });
+
+  useEffect(() => {
+    localStorage.setItem('theme', theme);
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
+
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   
   const [timeLeft, setTimeLeft] = useState(() => {
@@ -189,6 +206,18 @@ export default function App() {
             </span>
           </div>
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+              className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 transition-all duration-300 border border-slate-200/50 shadow-sm flex items-center justify-center cursor-pointer dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100 dark:border-slate-700"
+              title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              aria-label="Toggle Theme"
+            >
+              {theme === 'light' ? (
+                <Moon className="w-5 h-5 text-slate-700" />
+              ) : (
+                <Sun className="w-5 h-5 text-yellow-400" />
+              )}
+            </button>
             <a href="#checkout" className="bg-[#ff6b00] hover:bg-[#ea580c] text-white px-6 py-2.5 rounded-full font-black text-sm tracking-wide hover:shadow-[0_0_20px_rgba(255,107,0,0.35)] hover:scale-105 transition-all duration-300 uppercase">
               Enroll Now
             </a>

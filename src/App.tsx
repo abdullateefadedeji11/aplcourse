@@ -123,7 +123,7 @@ export default function App() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
   
   const [timeLeft, setTimeLeft] = useState(() => {
-    const difference = +new Date("2026-07-11T09:00:00") - +new Date();
+    const difference = +new Date("2026-07-11T17:00:00") - +new Date();
     if (difference > 0) {
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -138,7 +138,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const difference = +new Date("2026-07-11T09:00:00") - +new Date();
+      const difference = +new Date("2026-07-11T17:00:00") - +new Date();
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -258,7 +258,7 @@ export default function App() {
               
               <p className="text-[#ff6b00] font-black text-xs md:text-sm tracking-widest uppercase mb-5 flex items-center justify-center gap-2">
                 <span className="inline-flex h-2 w-2 rounded-full bg-[#ff6b00] animate-pulse"></span>
-                Countdown to July 11, 2026 Masterclass
+                Countdown to July 11, 2026 Masterclass (5:00 PM)
               </p>
               
               <div className="grid grid-cols-4 gap-3 md:gap-5">

@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   Cpu, 
@@ -104,27 +104,43 @@ function SafeImage({ src, alt, className = "", fallbackType }: SafeImageProps) {
 
 export default function App() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [showExporter, setShowExporter] = useState(false);
-  const [copied, setCopied] = useState(false);
+  
+  const [timeLeft, setTimeLeft] = useState(() => {
+    const difference = +new Date("2026-07-11T09:00:00") - +new Date();
+    if (difference > 0) {
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+        isExpired: false
+      };
+    }
+    return { days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true };
+  });
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const difference = +new Date("2026-07-11T09:00:00") - +new Date();
+      if (difference > 0) {
+        setTimeLeft({
+          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+          minutes: Math.floor((difference / 1000 / 60) % 60),
+          seconds: Math.floor((difference / 1000) % 60),
+          isExpired: false
+        });
+      } else {
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true });
+        clearInterval(timer);
+      }
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const toggleFaq = (index: number) => {
     setActiveFaq(activeFaq === index ? null : index);
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(REDESIGNED_HTML);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  const downloadHtmlFile = () => {
-    const element = document.createElement("a");
-    const file = new Blob([REDESIGNED_HTML], { type: 'text/html' });
-    element.href = URL.createObjectURL(file);
-    element.download = "apl_certification_landing_page.html";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
   };
 
   return (
@@ -145,19 +161,16 @@ export default function App() {
         GROWTH_MINDED
       </div>
 
-      {/* Top Floating Control Bar for Exporter */}
+      {/* Top Floating Control Bar for Live Timer */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-[#ff6b00]/85 via-red-600/85 to-[#ff6b00]/85 backdrop-blur-md text-white py-3 px-4 shadow-lg border-b border-white/10">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-3">
           <div className="flex items-center gap-2 text-xs md:text-sm font-black tracking-wide uppercase">
             <span className="inline-flex h-2 w-2 rounded-full bg-white animate-ping"></span>
-            🚨 July 11th & 12th Masterclass Registration is Live! Redesigned for 2026.
+            🚨 July 11th & 12th Masterclass Registration is Live!
           </div>
-          <button 
-            onClick={() => setShowExporter(true)}
-            className="bg-white/15 backdrop-blur-sm text-white hover:bg-white hover:text-[#ff6b00] px-4 py-1.5 rounded-full font-black text-xs uppercase tracking-wider flex items-center gap-2 transition-all duration-300 hover:scale-105 shadow-md border border-white/20"
-          >
-            <FileCode className="w-4 h-4" /> Get Redesigned HTML Code
-          </button>
+          <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider bg-black/20 px-3.5 py-1 rounded-full border border-white/10 font-mono text-white">
+            ⏰ {timeLeft.isExpired ? "Registration Closed" : `Closes in: ${timeLeft.days}d : ${timeLeft.hours}h : ${timeLeft.minutes}m : ${timeLeft.seconds}s`}
+          </div>
         </div>
       </div>
 
@@ -166,13 +179,13 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <SafeImage 
-              src="growth-minded ea.svg" 
+              src="/gea_logo.png" 
               alt="GEA Logo" 
               fallbackType="logo" 
               className="h-10 w-auto object-contain rounded-lg border border-white/10 p-1 bg-white/5 backdrop-blur-sm" 
             />
             <span className="font-heading font-extrabold text-sm md:text-lg tracking-tight text-white">
-              Growth-Minded <span className="text-[#ff6b00] font-black">Educators</span>
+              Growth-minded <span className="text-[#ff6b00] font-black">Educators Academy</span>
             </span>
           </div>
           <div className="flex items-center gap-4">
@@ -207,6 +220,41 @@ export default function App() {
             <a href="#course-pitch" className="w-full sm:w-auto bg-white/5 border border-white/10 backdrop-blur-sm text-white px-8 py-5 rounded-full font-bold text-lg tracking-wide hover:bg-white/10 transition-all duration-300 flex items-center justify-center gap-2">
               <Info className="w-5 h-5 text-slate-300" /> See How It Works
             </a>
+          </div>
+
+          {/* Big Glassmorphic Countdown Timer */}
+          <div className="mt-16 max-w-2xl mx-auto">
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-[2rem] p-6 md:p-8 text-center shadow-[0_0_30px_rgba(255,107,0,0.1)] relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-[#ff6b00]/50 to-transparent"></div>
+              
+              <p className="text-[#ff6b00] font-black text-xs md:text-sm tracking-widest uppercase mb-5 flex items-center justify-center gap-2">
+                <span className="inline-flex h-2 w-2 rounded-full bg-[#ff6b00] animate-pulse"></span>
+                Countdown to July 11, 2026 Masterclass
+              </p>
+              
+              <div className="grid grid-cols-4 gap-3 md:gap-5">
+                <div className="bg-slate-950/50 border border-white/5 rounded-2xl p-3 md:p-4 flex flex-col items-center">
+                  <span className="text-3xl md:text-5xl font-black text-white font-mono tracking-tight">{timeLeft.days}</span>
+                  <span className="text-[10px] md:text-xs text-slate-400 uppercase font-bold tracking-wider mt-1.5">Days</span>
+                </div>
+                <div className="bg-slate-950/50 border border-white/5 rounded-2xl p-3 md:p-4 flex flex-col items-center">
+                  <span className="text-3xl md:text-5xl font-black text-white font-mono tracking-tight">{timeLeft.hours}</span>
+                  <span className="text-[10px] md:text-xs text-slate-400 uppercase font-bold tracking-wider mt-1.5">Hours</span>
+                </div>
+                <div className="bg-slate-950/50 border border-white/5 rounded-2xl p-3 md:p-4 flex flex-col items-center">
+                  <span className="text-3xl md:text-5xl font-black text-white font-mono tracking-tight">{timeLeft.minutes}</span>
+                  <span className="text-[10px] md:text-xs text-slate-400 uppercase font-bold tracking-wider mt-1.5">Mins</span>
+                </div>
+                <div className="bg-slate-950/50 border border-white/5 rounded-2xl p-3 md:p-4 flex flex-col items-center">
+                  <span className="text-3xl md:text-5xl font-black text-white font-mono tracking-tight">{timeLeft.seconds}</span>
+                  <span className="text-[10px] md:text-xs text-slate-400 uppercase font-bold tracking-wider mt-1.5">Secs</span>
+                </div>
+              </div>
+              
+              <p className="text-slate-300 text-xs md:text-sm mt-5 font-light leading-relaxed">
+                Unlock instant access to all recordings, the exclusive WhatsApp support group, and premium bonuses immediately upon registration.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -1092,7 +1140,7 @@ export default function App() {
                 </svg>
               </div>
               <SafeImage 
-                src="Abdullateef Adedeji.jpg" 
+                src="/abdullateef.jpg" 
                 alt="Coach Abdullateef Adedeji" 
                 fallbackType="coach" 
                 className="w-full h-full object-cover absolute inset-0 z-10 hover:scale-105 transition-transform duration-700" 
@@ -1105,7 +1153,7 @@ export default function App() {
               <span className="text-brand-orange font-bold text-xs uppercase tracking-widest mb-2 font-heading">The Flipped Classroom Expert</span>
               <h4 className="text-3xl md:text-4xl font-black text-brand-navy mb-1 leading-tight font-heading">Abdullateef Adedeji</h4>
               <p className="text-brand-navy/80 font-semibold text-sm mb-6 pb-4 border-b border-slate-100 uppercase tracking-wider font-heading">
-                Founder, Growth-Minded Educators Academy
+                Founder, Growth-minded Educators Academy
               </p>
               
               <div className="space-y-4 text-slate-600 text-[15px] md:text-base leading-relaxed mb-8">
@@ -1137,12 +1185,12 @@ export default function App() {
       <footer className="bg-brand-dark text-slate-400 py-16 border-t border-slate-900">
         <div className="max-w-7xl mx-auto px-4 text-center flex flex-col items-center">
           <SafeImage 
-            src="GEA LOGO.jpg" 
+            src="/gea_logo.png" 
             alt="GEA Logo" 
             fallbackType="footer-logo" 
             className="h-14 w-auto object-contain rounded-lg mb-6 border border-slate-800 p-1 bg-brand-navy/50 opacity-85" 
           />
-          <h3 className="text-white font-extrabold text-xl mb-2 font-heading tracking-wide uppercase">Growth-Minded Educators Academy</h3>
+          <h3 className="text-white font-extrabold text-xl mb-2 font-heading tracking-wide uppercase">Growth-minded Educators Academy</h3>
           <p className="mb-8 max-w-md mx-auto text-sm leading-relaxed text-slate-400">
             Empowering African educators to transition from Content Dispensers to Global Guides.
           </p>
@@ -1163,95 +1211,10 @@ export default function App() {
           </div>
 
           <p className="text-xs text-slate-500 font-mono">
-            &copy; 2026 Growth-Minded Educators Academy. All rights reserved.
+            &copy; 2026 Growth-minded Educators Academy. All rights reserved.
           </p>
         </div>
       </footer>
-
-      {/* Exporter Drawer Panel */}
-      {showExporter && (
-        <div className="fixed inset-0 z-50 overflow-hidden" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
-          <div className="absolute inset-0 overflow-hidden">
-            {/* Backdrop filter */}
-            <div onClick={() => setShowExporter(false)} className="absolute inset-0 bg-slate-950/80 backdrop-blur-sm transition-opacity" aria-hidden="true"></div>
-
-            <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-              <div className="pointer-events-auto w-screen max-w-2xl transform transition-all duration-500 ease-in-out">
-                <div className="flex h-full flex-col bg-slate-950 border-l border-slate-800 shadow-2xl">
-                  {/* Header */}
-                  <div className="p-6 border-b border-slate-800 bg-slate-900/50 flex justify-between items-center">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 bg-brand-orange/10 border border-brand-orange/20 rounded-xl text-brand-orange">
-                        <FileCode className="w-6 h-6" />
-                      </div>
-                      <div>
-                        <h2 className="text-xl font-black text-white font-heading" id="slide-over-title">Export Redesigned HTML</h2>
-                        <p className="text-xs text-slate-400 mt-0.5">Copy or download your premium single-file landing page.</p>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => setShowExporter(false)}
-                      className="rounded-full p-2 text-slate-400 hover:text-white hover:bg-slate-800 transition focus:outline-none"
-                    >
-                      <X className="w-5 h-5" />
-                    </button>
-                  </div>
-
-                  {/* Body Content */}
-                  <div className="flex-1 overflow-y-auto p-6 space-y-6">
-                    {/* Instructions Card */}
-                    <div className="bg-brand-orange/10 border border-brand-orange/20 p-5 rounded-2xl">
-                      <h4 className="font-extrabold text-white text-sm uppercase tracking-wider mb-2 flex items-center gap-2">
-                        <Sparkles className="w-4 h-4 text-brand-orange" />
-                        Aesthetic redesign successful!
-                      </h4>
-                      <p className="text-xs text-slate-300 leading-relaxed">
-                        This HTML code integrates the premium <strong>Deep Space Navy & Vibrant Orange</strong> visual theme, complete with modern glassmorphic frames, device outlines, structural timeline layouts, and interactive shadow borders. All your links, YouTube iframe embeds, and copy are 100% preserved.
-                      </p>
-                    </div>
-
-                    {/* Exporter Controls */}
-                    <div className="flex flex-wrap gap-4">
-                      <button 
-                        onClick={copyToClipboard}
-                        className={`flex-1 flex items-center justify-center gap-2 px-6 py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all duration-300 ${copied ? 'bg-green-600 text-white' : 'bg-brand-orange text-white hover:bg-brand-orange-hover hover:shadow-neon-orange/20'}`}
-                      >
-                        {copied ? (
-                          <>
-                            <CheckIcon className="w-4 h-4" /> Copied HTML to Clipboard!
-                          </>
-                        ) : (
-                          <>
-                            <Copy className="w-4 h-4" /> Copy Entire Code
-                          </>
-                        )}
-                      </button>
-
-                      <button 
-                        onClick={downloadHtmlFile}
-                        className="flex-1 flex items-center justify-center gap-2 bg-slate-800 text-white hover:bg-slate-700 px-6 py-4 rounded-xl font-black text-sm uppercase tracking-wider transition-all duration-300 border border-slate-700 hover:border-slate-500"
-                      >
-                        <Download className="w-4 h-4" /> Download index.html
-                      </button>
-                    </div>
-
-                    {/* Code Previewer */}
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-center">
-                        <span className="text-xs text-slate-400 font-mono">index.html (Redesigned Code)</span>
-                        <span className="text-[10px] text-brand-orange font-bold uppercase tracking-wider bg-brand-orange/10 px-2 py-0.5 rounded">Tailwind CDN + Lucide CDN</span>
-                      </div>
-                      <div className="relative rounded-2xl border border-slate-800 bg-black/80 p-4 font-mono text-xs overflow-x-auto h-[380px] text-slate-300 select-all">
-                        <pre>{REDESIGNED_HTML}</pre>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );

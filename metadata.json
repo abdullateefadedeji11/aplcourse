@@ -1,0 +1,6 @@
+{
+  "name": "AI-Powered Learning Course",
+  "description": "Premium landing page for the AI-Powered Learning (APL) Certification Course by Growth-Minded Educators Academy.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -449,8 +449,8 @@ export default function App() {
                   </div>
                   <div className="text-right">
                     <p className="text-xs text-slate-400 uppercase tracking-widest font-bold">Price today</p>
-                    <p className="text-3xl font-black text-[#ff6b00] font-heading">₦5,000</p>
-                    <p className="text-xs text-slate-400 line-through">₦10,000</p>
+                    <p className="text-3xl font-black text-[#ff6b00] font-heading">₦7,500</p>
+                    <p className="text-xs text-slate-400 line-through">₦15,000</p>
                   </div>
                 </div>
 

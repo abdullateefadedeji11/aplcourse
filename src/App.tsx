@@ -25,7 +25,6 @@ import { motion, AnimatePresence } from 'motion/react';
 
 // Modular Sub-components
 import { SafeImage } from './components/SafeImage';
-import { WebinarSummary } from './components/WebinarSummary';
 import { WhoIsThisCourseFor } from './components/WhoIsThisCourseFor';
 import { ProofOfCreation } from './components/ProofOfCreation';
 import { MeetTheFacilitator } from './components/MeetTheFacilitator';
@@ -41,7 +40,8 @@ export default function App() {
     return 'light';
   });
 
-  const [selectedPath, setSelectedPath] = useState<'masterclass' | 'basic' | 'advanced' | 'school' | null>(null);
+  const [selectedPath, setSelectedPath] = useState<'masterclass' | 'advanced' | null>('masterclass');
+  const [showAPLCourse, setShowAPLCourse] = useState<boolean>(false);
   const detailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -87,7 +87,7 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSelectPath = (path: 'masterclass' | 'basic' | 'advanced' | 'school') => {
+  const handleSelectPath = (path: 'masterclass' | 'advanced') => {
     setSelectedPath(path);
     setTimeout(() => {
       detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -106,25 +106,13 @@ export default function App() {
               onClick={() => handleSelectPath('masterclass')}
               className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#ff6b00] border border-[#ff6b00]/30 hover:bg-[#ff6b00]/10 rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-sm font-heading cursor-pointer dark:bg-slate-800 dark:text-orange-400 dark:border-slate-700 dark:hover:bg-slate-700"
             >
-              Masterclass Only 👉
-            </button>
-            <button 
-              onClick={() => handleSelectPath('basic')}
-              className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#ff6b00] border border-[#ff6b00]/30 hover:bg-[#ff6b00]/10 rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-sm font-heading cursor-pointer dark:bg-slate-800 dark:text-orange-400 dark:border-slate-700 dark:hover:bg-slate-700"
-            >
-              Basic Course 👉
+              Masterclass Only 👉 (₦10,000)
             </button>
             <button 
               onClick={() => handleSelectPath('advanced')}
               className="w-full sm:w-auto px-7 py-4 bg-[#ff6b00] hover:bg-[#e05e00] text-white rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-md hover:scale-105 font-heading cursor-pointer"
             >
-              Advanced Course 👉
-            </button>
-            <button 
-              onClick={() => handleSelectPath('school')}
-              className="w-full sm:w-auto px-6 py-3.5 bg-slate-950 hover:bg-slate-900 text-white rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-sm dark:bg-slate-850 dark:hover:bg-slate-800 font-heading cursor-pointer"
-            >
-              School Packages 👉
+              Advanced Course (Includes FREE Masterclass) 👉 (₦12,000)
             </button>
           </div>
         </div>
@@ -201,16 +189,37 @@ export default function App() {
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#ff6b00]/10 border border-[#ff6b00]/20 backdrop-blur-sm text-[#ff6b00] font-bold text-xs mb-6 tracking-widest uppercase shadow-sm">
             <Sparkles className="w-3.5 h-3.5 animate-spin text-[#ff6b00]" style={{ animationDuration: '4s' }} />
-            Welcome to the AI-Powered Learning (APL) Hub
+            🚨 July 17th: Profitable AI-Powered Educator Masterclass (PAPEM) is Live!
           </div>
           
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-black text-slate-900 leading-tight tracking-tight mb-6 font-heading dark:text-white">
-            The Future of <span className="text-[#ff6b00]">Education</span> is Here.
+            The Profitable <span className="text-[#ff6b00]">AI-Powered</span> Educator Masterclass
           </h1>
           
-          <p className="text-lg md:text-2xl text-slate-600 mb-12 leading-relaxed max-w-4xl mx-auto font-medium dark:text-slate-300">
-            Bridging the gap between visionary school owners, energized teachers, and unstoppable students.
+          <p className="text-lg md:text-2xl text-slate-600 mb-10 leading-relaxed max-w-4xl mx-auto font-medium dark:text-slate-300">
+            Stop working like an overworked tape recorder. Reclaim your weekends, automate lesson planning in 10 minutes, and step into your highly visible, profitable digital authority era.
           </p>
+
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 max-w-2xl mx-auto">
+            <a 
+              href="#selection-area"
+              onClick={() => handleSelectPath('masterclass')}
+              className="w-full sm:w-auto px-8 py-4 bg-[#ff6b00] hover:bg-[#e05e00] text-white rounded-full font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-lg hover:scale-105 font-heading text-center"
+            >
+              Secure Your Seat For ₦10,000 👉
+            </a>
+            <button 
+              onClick={() => {
+                setShowAPLCourse(prev => !prev);
+                setTimeout(() => {
+                  document.getElementById('selection-area')?.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+              }}
+              className="w-full sm:w-auto px-8 py-4 bg-slate-900 text-white rounded-full font-black text-sm uppercase tracking-wider transition-all duration-300 hover:bg-slate-800 font-heading cursor-pointer dark:bg-slate-800 dark:hover:bg-slate-750 border border-slate-700/50 text-center"
+            >
+              {showAPLCourse ? "Hide APL Pedagogy Course ⬆" : "Explore APL Pedagogy Course ⬇"}
+            </button>
+          </div>
         </div>
       </section>
 
@@ -294,9 +303,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* 1. Summary video inserted immediately after the AI-Powered Solution */}
-      <WebinarSummary />
-
       {/* 2. Visual Selection Path Area & Packages */}
       <section id="selection-area" className="py-16 bg-slate-100 dark:bg-slate-900 border-t border-b border-slate-200 dark:border-slate-800 transition-colors duration-300">
         <div className="max-w-6xl mx-auto px-4 text-center">
@@ -309,106 +315,70 @@ export default function App() {
           </p>
           
           {/* Pill Selector Buttons */}
-          <div className="flex flex-col lg:flex-row justify-center items-stretch gap-4 md:gap-5 max-w-6xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-center items-stretch gap-6 max-w-4xl mx-auto">
             
             {/* Button: Masterclass */}
             <button 
               id="btn-select-masterclass"
               onClick={() => handleSelectPath('masterclass')}
-              className={`flex-1 flex flex-col justify-between items-center text-center p-6 rounded-3xl border transition-all duration-300 cursor-pointer ${
+              className={`flex-1 flex flex-col justify-between items-center text-center p-8 rounded-3xl border transition-all duration-300 cursor-pointer ${
                 selectedPath === 'masterclass' 
                   ? 'bg-[#ff6b00] text-white border-[#ff6b00] shadow-xl shadow-[#ff6b00]/30 scale-105' 
                   : 'bg-white text-slate-800 border-slate-200 hover:border-[#ff6b00]/40 dark:bg-slate-850 dark:border-slate-800 dark:text-white dark:hover:border-[#ff6b00]/30'
               }`}
             >
               <div className="flex flex-col items-center">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${selectedPath === 'masterclass' ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
-                  <MonitorPlay className={`w-6 h-6 ${selectedPath === 'masterclass' ? 'text-white' : 'text-[#ff6b00]'}`} />
+                <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-5 ${selectedPath === 'masterclass' ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
+                  <MonitorPlay className={`w-7 h-7 ${selectedPath === 'masterclass' ? 'text-white' : 'text-[#ff6b00]'}`} />
                 </div>
-                <span className="font-heading font-black text-sm md:text-base tracking-wide uppercase">
+                <span className="font-heading font-black text-lg md:text-xl tracking-wide uppercase">
                   Masterclass Only
                 </span>
-                <p className={`text-xs mt-2 font-light max-w-[200px] ${selectedPath === 'masterclass' ? 'text-white/80' : 'text-slate-500'}`}>
-                  The 3-Day Live Implementation Workshop.
+                <p className={`text-sm mt-3 font-light max-w-[250px] leading-relaxed ${selectedPath === 'masterclass' ? 'text-white/95' : 'text-slate-500'}`}>
+                  Access to the 3-Day Live Implementation Workshop. Get the systems, blueprints, and templates.
+                </p>
+                <p className={`text-xl font-heading font-black mt-4 ${selectedPath === 'masterclass' ? 'text-white' : 'text-[#ff6b00]'}`}>
+                  ₦10,000
                 </p>
               </div>
-              <span className={`mt-5 px-4.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'masterclass' ? 'bg-white text-[#ff6b00]' : 'bg-[#ff6b00] text-white'}`}>
-                Explore Masterclass
-              </span>
-            </button>
-
-            {/* Button A: Basic */}
-            <button 
-              onClick={() => handleSelectPath('basic')}
-              className={`flex-1 flex flex-col justify-between items-center text-center p-6 rounded-3xl border transition-all duration-300 cursor-pointer ${
-                selectedPath === 'basic' 
-                  ? 'bg-[#ff6b00] text-white border-[#ff6b00] shadow-xl shadow-[#ff6b00]/30 scale-105' 
-                  : 'bg-white text-slate-800 border-slate-200 hover:border-[#ff6b00]/40 dark:bg-slate-850 dark:border-slate-800 dark:text-white dark:hover:border-[#ff6b00]/30'
-              }`}
-            >
-              <div className="flex flex-col items-center">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${selectedPath === 'basic' ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
-                  <BookOpen className={`w-6 h-6 ${selectedPath === 'basic' ? 'text-white' : 'text-[#ff6b00]'}`} />
-                </div>
-                <span className="font-heading font-black text-sm md:text-base tracking-wide uppercase">
-                  Basic Course
-                </span>
-                <p className={`text-xs mt-2 font-light max-w-[200px] ${selectedPath === 'basic' ? 'text-white/80' : 'text-slate-500'}`}>
-                  7 core modules for fast classroom automation.
-                </p>
-              </div>
-              <span className={`mt-5 px-4.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'basic' ? 'bg-white text-[#ff6b00]' : 'bg-[#ff6b00] text-white'}`}>
-                Explore Basic
+              <span className={`mt-6 px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'masterclass' ? 'bg-white text-[#ff6b00]' : 'bg-[#ff6b00] text-white'}`}>
+                {selectedPath === 'masterclass' ? 'Viewing Masterclass' : 'Explore Masterclass'}
               </span>
             </button>
 
             {/* Button B: Advanced */}
             <button 
               onClick={() => handleSelectPath('advanced')}
-              className={`flex-1 flex flex-col justify-between items-center text-center p-6 rounded-3xl border transition-all duration-300 cursor-pointer ${
+              className={`flex-1 flex flex-col justify-between items-center text-center p-8 rounded-3xl border transition-all duration-300 cursor-pointer relative ${
                 selectedPath === 'advanced' 
-                  ? 'bg-[#ff6b00] text-white border-[#ff6b00] shadow-xl shadow-[#ff6b00]/30 scale-105' 
+                  ? 'bg-slate-900 text-white border-[#ff6b00] shadow-2xl scale-105 ring-4 ring-[#ff6b00]/20' 
                   : 'bg-white text-slate-800 border-slate-200 hover:border-[#ff6b00]/40 dark:bg-slate-850 dark:border-slate-800 dark:text-white dark:hover:border-[#ff6b00]/30'
               }`}
             >
-              <div className="flex flex-col items-center">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${selectedPath === 'advanced' ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
-                  <Award className={`w-6 h-6 ${selectedPath === 'advanced' ? 'text-white' : 'text-[#ff6b00]'}`} />
-                </div>
-                <span className="font-heading font-black text-sm md:text-base tracking-wide uppercase">
-                  Advanced Course
-                </span>
-                <p className={`text-xs mt-2 font-light max-w-[200px] ${selectedPath === 'advanced' ? 'text-white/80' : 'text-slate-500'}`}>
-                  12 comprehensive modules for complete classroom transformation.
-                </p>
+              {/* Highlight Tag */}
+              <div className="absolute top-0 right-1/2 translate-x-1/2 -translate-y-1/2 bg-gradient-to-r from-red-600 to-orange-500 text-white text-[10px] font-black uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md whitespace-nowrap z-10 animate-pulse">
+                🔥 BEST VALUE (FREE MASTERCLASS!)
               </div>
-              <span className={`mt-5 px-4.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'advanced' ? 'bg-white text-[#ff6b00]' : 'bg-[#ff6b00] text-white'}`}>
-                Explore Advanced
-              </span>
-            </button>
 
-            {/* Button C: School Owners */}
-            <button 
-              onClick={() => handleSelectPath('school')}
-              className={`flex-1 flex flex-col justify-between items-center text-center p-6 rounded-3xl border transition-all duration-300 cursor-pointer ${
-                selectedPath === 'school' 
-                  ? 'bg-[#ff6b00] text-white border-[#ff6b00] shadow-xl shadow-[#ff6b00]/30 scale-105' 
-                  : 'bg-white text-slate-800 border-slate-200 hover:border-[#ff6b00]/40 dark:bg-slate-850 dark:border-slate-800 dark:text-white dark:hover:border-[#ff6b00]/30'
-              }`}
-            >
               <div className="flex flex-col items-center">
-                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${selectedPath === 'school' ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
-                  <Building className={`w-6 h-6 ${selectedPath === 'school' ? 'text-white' : 'text-[#ff6b00]'}`} />
+                <div className={`w-14 h-14 rounded-full flex items-center justify-center mb-5 ${selectedPath === 'advanced' ? 'bg-[#ff6b00]/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
+                  <Award className={`w-7 h-7 text-[#ff6b00]`} />
                 </div>
-                <span className="font-heading font-black text-sm md:text-base tracking-wide uppercase">
-                  School Packages
+                <span className="font-heading font-black text-lg md:text-xl tracking-wide uppercase">
+                  Advanced Course Combo
                 </span>
-                <p className={`text-xs mt-2 font-light max-w-[200px] ${selectedPath === 'school' ? 'text-[#e2e8f0]' : 'text-slate-500'}`}>
-                  Institutional framework training for entire staffs.
+                <p className={`text-sm mt-3 font-light max-w-[250px] leading-relaxed ${selectedPath === 'advanced' ? 'text-white/95' : 'text-slate-500'}`}>
+                  Get the full 12-Module self-paced APL Advanced Course, community support, plus <strong className={selectedPath === 'advanced' ? 'text-[#ff6b00]' : 'text-[#ff6b00]'}>FREE</strong> Masterclass ticket!
                 </p>
+                <div className="mt-4 flex items-baseline gap-2">
+                  <span className={`text-xl font-heading font-black ${selectedPath === 'advanced' ? 'text-white' : 'text-[#ff6b00]'}`}>
+                    ₦12,000
+                  </span>
+                  <span className="text-xs text-slate-400 line-through">₦25,000</span>
+                </div>
               </div>
-              <span className={`mt-5 px-4.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'school' ? 'bg-white text-[#ff6b00]' : 'bg-[#ff6b00] text-white'}`}>
-                Explore School
+              <span className={`mt-6 px-5 py-2 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'advanced' ? 'bg-[#ff6b00] text-white' : 'bg-[#ff6b00] text-white'}`}>
+                {selectedPath === 'advanced' ? 'Viewing Advanced Course' : 'Explore Advanced Course'}
               </span>
             </button>
 
@@ -447,22 +417,10 @@ export default function App() {
                     Masterclass Only
                   </button>
                   <button 
-                    onClick={() => handleSelectPath('basic')} 
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 cursor-pointer"
-                  >
-                    Basic Course
-                  </button>
-                  <button 
                     onClick={() => handleSelectPath('advanced')} 
                     className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:hover:bg-slate-700 cursor-pointer"
                   >
-                    Advanced Course
-                  </button>
-                  <button 
-                    onClick={() => handleSelectPath('school')} 
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 cursor-pointer"
-                  >
-                    School Owner
+                    Advanced Course + FREE Masterclass
                   </button>
                 </div>
               </motion.div>
@@ -555,7 +513,7 @@ export default function App() {
                     <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-center dark:bg-slate-900 dark:border-slate-850">
                       <p className="font-bold text-slate-500 mb-2 text-[10px] uppercase tracking-wider">🌍 International Cards:</p>
                       <a 
-                        href="https://geacademy.selar.com/aplbasiccourse" 
+                        href="https://geacademy.selar.com/papemasterclass" 
                         target="_blank" 
                         rel="noopener noreferrer" 
                         className="block bg-gradient-to-r from-[#ff6b00] to-red-600 text-white text-center py-2.5 rounded-lg font-black text-xs uppercase tracking-wider hover:opacity-90 transition-all"
@@ -569,7 +527,7 @@ export default function App() {
                       *After making your bank transfer, send a direct message with your receipt on WhatsApp to complete enrollment instantly.
                     </p>
                     <a 
-                      href="https://wa.link/pd09oa" 
+                      href="https://wa.link/6685ik" 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="bg-[#25D366] hover:bg-[#20ba5a] text-white text-center px-5 py-2.5 rounded-lg font-black text-xs uppercase tracking-wider transition-all dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center gap-1.5 shadow-md"
@@ -582,7 +540,7 @@ export default function App() {
                 {/* Big Button CTA */}
                 <div className="text-center">
                   <a 
-                    href="https://geacademy.selar.com/aplbasiccourse" 
+                    href="https://geacademy.selar.com/papemasterclass" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="inline-flex bg-[#ff6b00] text-white px-8 py-4.5 rounded-full font-black text-sm md:text-base hover:scale-105 transition-all duration-300 shadow-xl shadow-[#ff6b00]/30 uppercase tracking-wider"
@@ -594,165 +552,7 @@ export default function App() {
               </motion.div>
             )}
 
-            {/* PATH 1: BASIC COURSE */}
-            {selectedPath === 'basic' && (
-              <motion.div
-                key="basic-course"
-                initial={{ opacity: 0, scale: 0.98, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.98, y: -20 }}
-                transition={{ duration: 0.35 }}
-                className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:bg-slate-900 dark:border-slate-800 text-left"
-              >
-                <div className="flex flex-wrap justify-between items-start gap-4 mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
-                  <div>
-                    <span className="text-[#ff6b00] font-black tracking-widest uppercase text-xs font-heading bg-[#ff6b00]/10 px-3 py-1.5 rounded-md">Path 1</span>
-                    <h3 className="text-2xl md:text-4xl font-black text-slate-900 mt-3 font-heading dark:text-white">
-                      The AI-Powered Learning Basic Course
-                    </h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-400 uppercase tracking-widest font-bold">Price today</p>
-                    <p className="text-3xl font-black text-[#ff6b00] font-heading">₦7,500</p>
-                    <p className="text-xs text-slate-400 line-through">₦15,000</p>
-                  </div>
-                </div>
 
-                <div className="bg-[#ff6b00]/5 border-l-4 border-[#ff6b00] p-6 rounded-r-2xl mb-10 dark:bg-slate-800/50">
-                  <h4 className="font-heading font-extrabold text-lg text-slate-900 mb-2 dark:text-white">
-                    Kickstart Your Classroom Automation. 🚀
-                  </h4>
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed dark:text-slate-300">
-                    Acquire foundational skills to eliminate repetitive tasks, automate lesson prep, and transition from dry lecturing to collaborative, engaging facilitation.
-                  </p>
-                  <p className="text-[#ff6b00] text-sm font-bold mt-3 font-heading">
-                    💡 Optional Upgrade: Add the Live Masterclass at checkout for a 50% discount (Total: ₦12,500).
-                  </p>
-                </div>
-
-                {/* Inside curriculum */}
-                <div className="mb-10">
-                  <h4 className="font-heading font-black text-lg text-slate-900 mb-6 uppercase tracking-wider flex items-center gap-2 dark:text-white">
-                    <Award className="text-[#ff6b00] w-5 h-5" /> Inside the APL Basic Course Curriculum
-                  </h4>
-                  <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {[
-                      { num: 1, text: "Shift your pedagogy from a traditional 'tape recorder' to a visionary global guide." },
-                      { num: 2, text: "Demystify artificial intelligence and master the exact language needed to command AI tools." },
-                      { num: 3, text: "Develop an AI mindset to equip the 2030 innovator while designing ethical, cheat-proof assessments." },
-                      { num: 4, text: "Master the AI-Powered Flipped Classroom to build true 21st-century innovators." },
-                      { num: 5, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." },
-                      { num: 6, text: "Build your own customized, highly engaging personal AI textbook in just 10 minutes." },
-                      { num: 7, text: "Transform dry subjects into captivating edutainment by producing educational music videos with AI." }
-                    ].map((mod) => (
-                      <li key={mod.num} className="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex gap-4 items-start dark:bg-slate-850 dark:border-slate-800">
-                        <span className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-sm flex-shrink-0 shadow-sm dark:bg-slate-800">
-                          {mod.num}
-                        </span>
-                        <p className="text-slate-600 text-sm md:text-[14px] leading-relaxed dark:text-slate-300">
-                          {mod.text}
-                        </p>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                {/* Bonuses and Package Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                  
-                  {/* Bonuses Card */}
-                  <div className="bg-gradient-to-br from-[#ff6b00]/5 to-red-50/40 p-6 rounded-3xl border border-[#ff6b00]/15 dark:from-slate-850 dark:to-slate-900 dark:border-[#ff6b00]/10">
-                    <h5 className="font-heading font-black text-[#ff6b00] uppercase tracking-wide text-sm mb-4 flex items-center gap-2">
-                      Exclusive Bonuses Included Today 🎁
-                    </h5>
-                    <ul className="space-y-3.5">
-                      <li className="flex gap-2.5 items-start text-xs md:text-sm text-slate-700 dark:text-slate-300">
-                        <Check className="w-4.5 h-4.5 text-[#ff6b00] flex-shrink-0 mt-0.5" />
-                        <span><strong>Bonus 1:</strong> Access to the complete recording of the AI-Powered Educators Masterclass.</span>
-                      </li>
-                      <li className="flex gap-2.5 items-start text-xs md:text-sm text-slate-700 dark:text-slate-300">
-                        <Check className="w-4.5 h-4.5 text-[#ff6b00] flex-shrink-0 mt-0.5" />
-                        <span><strong>Bonus 2:</strong> Complete replay of the highly requested "Teach Smart Earn Big" session.</span>
-                      </li>
-                      <li className="flex gap-2.5 items-start text-xs md:text-sm text-slate-700 dark:text-slate-300">
-                        <Check className="w-4.5 h-4.5 text-[#ff6b00] flex-shrink-0 mt-0.5" />
-                        <span><strong>Bonus 3:</strong> 6 Exclusive Videos from "The Empowered Educators Mindset Track" (Profitable Teacher Academy).</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Enrollment Package Card */}
-                  <div className="bg-slate-50 p-6 rounded-3xl border border-slate-100 dark:bg-slate-850 dark:border-slate-800">
-                    <h5 className="font-heading font-black text-slate-900 uppercase tracking-wide text-sm mb-4 dark:text-white">
-                      Your Enrollment Package
-                    </h5>
-                    <ul className="space-y-3.5 text-xs md:text-sm text-slate-600 dark:text-slate-300">
-                      <li className="flex gap-2.5 items-start">
-                        <Check className="w-4 h-4 text-[#ff6b00] flex-shrink-0 mt-0.5" />
-                        <span><strong>100% Self-Paced Learning:</strong> Access the entire 7-module curriculum immediately.</span>
-                      </li>
-                      <li className="flex gap-2.5 items-start">
-                        <Check className="w-4 h-4 text-[#ff6b00] flex-shrink-0 mt-0.5" />
-                        <span><strong>Exclusive WhatsApp Community Support:</strong> Join our dedicated WhatsApp group to ask questions and get direct support.</span>
-                      </li>
-                    </ul>
-                  </div>
-
-                </div>
-
-                {/* Real Bank Account Instructions Container */}
-                <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200/60 mb-10 dark:bg-slate-850 dark:border-slate-800">
-                  <h4 className="font-heading font-bold text-slate-900 mb-4 dark:text-white uppercase text-xs tracking-wider">
-                    How To Secure Your Seat Right Now (Basic):
-                  </h4>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left">
-                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm dark:bg-slate-900 dark:border-slate-850">
-                      <p className="font-bold text-slate-500 mb-1 text-[10px] uppercase tracking-wider">🇳🇬 Nigeria Bank Transfer:</p>
-                      <p className="font-mono text-2xl font-black text-slate-900 tracking-widest select-all dark:text-white">0100020970</p>
-                      <p className="font-bold text-slate-800 text-xs dark:text-slate-300 mt-0.5">Abdullateef Adedeji</p>
-                      <p className="font-bold text-[#ff6b00] text-xs uppercase mt-1 font-heading">Sterling Bank (Naira)</p>
-                    </div>
-                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-center dark:bg-slate-900 dark:border-slate-850">
-                      <p className="font-bold text-slate-500 mb-2 text-[10px] uppercase tracking-wider">🌍 International Cards & PayPal:</p>
-                      <a 
-                        href="https://geacademy.selar.com/aplbasiccourse" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="block bg-gradient-to-r from-[#ff6b00] to-red-600 text-white text-center py-2.5 rounded-lg font-black text-xs uppercase tracking-wider hover:opacity-90 transition-all"
-                      >
-                        Pay Online Securely via Selar <ExternalLink className="inline w-3 h-3 ml-1" />
-                      </a>
-                    </div>
-                  </div>
-                  <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-slate-200/60 dark:border-slate-800">
-                    <p className="text-slate-500 text-xs dark:text-slate-400">
-                      *After making your bank transfer, send a direct message with your receipt on WhatsApp to complete enrollment instantly.
-                    </p>
-                    <a 
-                      href="https://wa.link/pd09oa" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="bg-[#25D366] hover:bg-[#20ba5a] text-white text-center px-5 py-2.5 rounded-lg font-black text-xs uppercase tracking-wider transition-all dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center gap-1.5 shadow-md"
-                    >
-                      <MessageSquare className="w-4 h-4 fill-white" /> Confirm on WhatsApp <ExternalLink className="inline w-3 h-3 ml-1" />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Big Button CTA */}
-                <div className="text-center">
-                  <a 
-                    href="https://geacademy.selar.com/aplbasiccourse" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex bg-[#ff6b00] text-white px-8 py-4.5 rounded-full font-black text-sm md:text-base hover:scale-105 transition-all duration-300 shadow-xl shadow-[#ff6b00]/30 uppercase tracking-wider"
-                  >
-                    ENROLL IN THE BASIC COURSE INSTANTLY <ArrowRight className="w-5 h-5 ml-2.5 animate-pulse text-white" />
-                  </a>
-                </div>
-
-              </motion.div>
-            )}
 
             {/* PATH 2: ADVANCED COURSE */}
             {selectedPath === 'advanced' && (
@@ -909,7 +709,7 @@ export default function App() {
                       *After making your bank transfer, send a direct message with your receipt on WhatsApp to complete enrollment instantly.
                     </p>
                     <a 
-                      href="https://wa.link/xi27im" 
+                      href="https://wa.link/6685ik" 
                       target="_blank" 
                       rel="noopener noreferrer" 
                       className="bg-[#25D366] hover:bg-[#20ba5a] text-white text-center px-5 py-2.5 rounded-lg font-black text-xs uppercase tracking-wider transition-all dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center gap-1.5 shadow-md"
@@ -934,241 +734,7 @@ export default function App() {
               </motion.div>
             )}
 
-            {/* PATH 3: SCHOOL OWNER PACKAGES */}
-            {selectedPath === 'school' && (
-              <motion.div
-                key="school-packages"
-                initial={{ opacity: 0, scale: 0.98, y: 20 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.98, y: -20 }}
-                transition={{ duration: 0.35 }}
-                className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:bg-slate-900 dark:border-slate-800"
-              >
-                <div className="flex flex-wrap justify-between items-start gap-4 mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
-                  <div>
-                    <span className="text-[#ff6b00] font-black tracking-widest uppercase text-xs font-heading bg-[#ff6b00]/10 px-3 py-1.5 rounded-md">Path 3</span>
-                    <h3 className="text-2xl md:text-4xl font-black text-slate-900 mt-3 font-heading dark:text-white">
-                      The Institutional APL Framework (School Owners)
-                    </h3>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-400 uppercase tracking-widest font-bold">Inquiries & Booking</p>
-                    <p className="text-sm font-bold text-slate-950 dark:text-white font-heading">Direct School Support</p>
-                    <p className="text-xs text-[#ff6b00] font-bold uppercase tracking-wider">Fast-Response WhatsApp</p>
-                  </div>
-                </div>
 
-                <div className="bg-[#ff6b00]/5 border-l-4 border-[#ff6b00] p-6 rounded-r-2xl mb-10 dark:bg-slate-800/50">
-                  <h4 className="font-heading font-extrabold text-lg text-slate-900 mb-2 dark:text-white">
-                    Transform Your School. Empower Your Teachers. 🏫🚀
-                  </h4>
-                  <p className="text-slate-600 text-sm md:text-base leading-relaxed dark:text-slate-300">
-                    Equip your entire academic staff with the APL Framework to eliminate burnout, upgrade your school’s pedagogy, and build a world-class 21st-century institution. We offer two highly flexible, impact-driven training packages designed specifically for schools. <strong className="text-[#ff6b00]">You pick the exact start date that fits perfectly into your academic calendar.</strong>
-                  </p>
-                </div>
-
-                {/* Tiers Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
-                  
-                  {/* Tier 1 */}
-                  <div className="bg-slate-50 border border-slate-200/60 p-6 md:p-8 rounded-[2rem] shadow-sm relative overflow-hidden flex flex-col justify-between dark:bg-slate-850 dark:border-slate-800">
-                    <div>
-                      <div className="flex justify-between items-start gap-3 mb-4">
-                        <span className="font-heading font-black text-[#ff6b00] uppercase text-xs bg-[#ff6b00]/10 px-2.5 py-1 rounded">Tier 1</span>
-                        <div className="text-right">
-                          <p className="text-xs text-slate-400 line-through">₦50,000</p>
-                          <p className="text-xl font-black text-slate-900 dark:text-white">₦40,000</p>
-                        </div>
-                      </div>
-                      
-                      <h4 className="font-heading font-black text-lg md:text-xl text-slate-900 mb-3 dark:text-white">
-                        The 7-Day Basic Transformation Package
-                      </h4>
-                      <p className="text-slate-500 text-xs md:text-sm mb-6 leading-relaxed dark:text-slate-300">
-                        A streamlined, 7-day intensive training to give your staff immediate automation skills and introduce the Flipped Classroom model.
-                      </p>
-                      
-                      <ul className="space-y-2 text-xs md:text-sm mb-6 text-slate-600 dark:text-slate-300">
-                        <li className="flex gap-2 items-start">
-                          <Check className="text-green-500 w-4 h-4 flex-shrink-0 mt-0.5" />
-                          <span><strong>Curriculum:</strong> Covers Modules 1 through 7 of the APL Framework.</span>
-                        </li>
-                        <li className="flex gap-2 items-start">
-                          <Check className="text-green-500 w-4 h-4 flex-shrink-0 mt-0.5" />
-                          <span><strong>Impact:</strong> Rapid automation, low-tech implementation strategies, and transition to active learning.</span>
-                        </li>
-                      </ul>
-
-                      {/* Replicated Basic Curriculum */}
-                      <div className="mt-6 pt-6 border-t border-slate-200/60 dark:border-slate-700/50">
-                        <p className="font-heading font-extrabold text-xs text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                          <BookOpen className="w-4 h-4 text-[#ff6b00]" /> Basic Curriculum Modules (1-7)
-                        </p>
-                        <div className="space-y-3">
-                          {[
-                            { num: 1, text: "Shift your pedagogy from a traditional 'tape recorder' to a visionary global guide." },
-                            { num: 2, text: "Demystify artificial intelligence and master the exact language needed to command AI tools." },
-                            { num: 3, text: "Develop an AI mindset to equip the 2030 innovator while designing ethical, cheat-proof assessments." },
-                            { num: 4, text: "Master the AI-Powered Flipped Classroom to build true 21st-century innovators." },
-                            { num: 5, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." },
-                            { num: 6, text: "Build your own customized, highly engaging personal AI textbook in just 10 minutes." },
-                            { num: 7, text: "Transform dry subjects into captivating edutainment by producing educational music videos with AI." }
-                          ].map((mod) => (
-                            <div key={mod.num} className="flex gap-2.5 items-start">
-                              <span className="w-5 h-5 rounded-md bg-[#ff6b00]/10 text-[#ff6b00] flex items-center justify-center font-bold text-[10px] flex-shrink-0">
-                                {mod.num}
-                              </span>
-                              <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
-                                {mod.text}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Tier 2 */}
-                  <div className="bg-slate-900 text-white p-6 md:p-8 rounded-[2rem] shadow-lg relative overflow-hidden flex flex-col justify-between border border-slate-800">
-                    <div className="absolute top-0 right-0 bg-[#ff6b00] text-white text-[10px] font-black uppercase tracking-widest px-4 py-1 rounded-bl-xl font-heading">
-                      Recommended
-                    </div>
-                    
-                    <div>
-                      <div className="flex justify-between items-start gap-3 mb-4">
-                        <span className="font-heading font-black text-[#ff6b00] uppercase text-xs bg-[#ff6b00]/25 px-2.5 py-1 rounded">Tier 2</span>
-                        <div className="text-right">
-                          <p className="text-xs text-slate-400 line-through">₦75,000</p>
-                          <p className="text-xl font-black text-white">₦60,000</p>
-                        </div>
-                      </div>
-                      
-                      <h4 className="font-heading font-black text-lg md:text-xl text-white mb-3">
-                        The 14-Day Advanced Mastery Package
-                      </h4>
-                      <p className="text-slate-400 text-xs md:text-sm mb-6 leading-relaxed">
-                        Our most comprehensive 14-day training program. This tier completely digitizes your staff's workflow, building a fully sustainable, gamified, and interactive digital command center.
-                      </p>
-                      
-                      <ul className="space-y-2 text-xs md:text-sm mb-6 text-slate-300">
-                        <li className="flex gap-2 items-start">
-                          <Check className="text-[#ff6b00] w-4 h-4 flex-shrink-0 mt-0.5" />
-                          <span><strong>Curriculum:</strong> Covers all 12 Modules of the APL Framework.</span>
-                        </li>
-                        <li className="flex gap-2 items-start">
-                          <Check className="text-[#ff6b00] w-4 h-4 flex-shrink-0 mt-0.5" />
-                          <span><strong>Impact:</strong> Full digital integration, automated assessments, rapid visual creation, and sustainable cloud workspace.</span>
-                        </li>
-                      </ul>
-
-                      {/* Replicated Advanced Curriculum */}
-                      <div className="mt-6 pt-6 border-t border-slate-800">
-                        <p className="font-heading font-extrabold text-xs text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-1.5">
-                          <Award className="w-4 h-4 text-[#ff6b00]" /> Advanced Curriculum Modules (1-12)
-                        </p>
-                        <div className="space-y-3">
-                          {[
-                            { num: 1, text: "Shift your pedagogy from a traditional 'tape recorder' to a visionary global guide." },
-                            { num: 2, text: "Demystify artificial intelligence and master the exact language needed to command AI tools." },
-                            { num: 3, text: "Develop an AI mindset to equip the 2030 innovator while designing ethical, cheat-proof assessments." },
-                            { num: 4, text: "Master the AI-Powered Flipped Classroom to build true 21st-century innovators." },
-                            { num: 5, text: "Automate brilliance with the ChatGPT lesson design masterclass and rapid visual slide creation." },
-                            { num: 6, text: "Animate your lessons and master mobile screen recording in the Instant Video Factory." },
-                            { num: 7, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." },
-                            { num: 8, text: "Build your own customized, highly engaging personal AI textbook in just 10 minutes." },
-                            { num: 9, text: "Transform dry subjects into captivating edutainment by producing educational music videos with AI." },
-                            { num: 10, text: "Create a gamified classroom with automated, interactive assessments to boost student engagement." },
-                            { num: 11, text: "Achieve a sustainable classroom through seamless cloud organization with Google Drive." },
-                            { num: 12, text: "Structure your ultimate Digital Command Center using Google Classroom." }
-                          ].map((mod) => (
-                            <div key={mod.num} className="flex gap-2.5 items-start">
-                              <span className="w-5 h-5 rounded-md bg-slate-850 text-[#ff6b00] border border-slate-700/50 flex items-center justify-center font-bold text-[10px] flex-shrink-0">
-                                {mod.num}
-                              </span>
-                              <p className="text-slate-300 text-xs leading-relaxed">
-                                {mod.text}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* How the Institutional Training Works */}
-                <div className="bg-slate-50 p-6 md:p-8 rounded-[2rem] border border-slate-100 mb-10 dark:bg-slate-850 dark:border-slate-800">
-                  <h4 className="font-heading font-black text-slate-900 mb-5 uppercase text-xs tracking-wider dark:text-white">
-                    How The Institutional Training Works
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="flex gap-3 items-start">
-                      <div className="w-8 h-8 rounded-lg bg-[#ff6b00]/15 text-[#ff6b00] flex items-center justify-center font-black flex-shrink-0">
-                        <MessageSquare className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h5 className="font-bold text-xs uppercase tracking-wide text-slate-800 dark:text-white mb-1">Total Flexibility</h5>
-                        <p className="text-slate-500 text-xs leading-relaxed dark:text-slate-400">
-                          You dictate the start date that works best for your teachers’ convenience.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-3 items-start">
-                      <div className="w-8 h-8 rounded-lg bg-[#ff6b00]/15 text-[#ff6b00] flex items-center justify-center font-black flex-shrink-0">
-                        <MessageSquare className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h5 className="font-bold text-xs uppercase tracking-wide text-slate-800 dark:text-white mb-1">Dedicated Support</h5>
-                        <p className="text-slate-500 text-xs leading-relaxed dark:text-slate-400">
-                          Your staff gets access to a private WhatsApp community to ensure no teacher is left behind.
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-3 items-start">
-                      <div className="w-8 h-8 rounded-lg bg-[#ff6b00]/15 text-[#ff6b00] flex items-center justify-center font-black flex-shrink-0">
-                        <Sparkles className="w-4 h-4" />
-                      </div>
-                      <div>
-                        <h5 className="font-bold text-xs uppercase tracking-wide text-slate-800 dark:text-white mb-1">Immediate ROI</h5>
-                        <p className="text-slate-500 text-xs leading-relaxed dark:text-slate-400">
-                          The time teachers save on week one of daily prep will immediately offset the time spent on training.
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Callout box */}
-                <div className="bg-slate-50 border border-slate-200 rounded-3xl p-6 md:p-8 text-center mb-10 dark:bg-slate-850 dark:border-slate-800">
-                  <p className="font-bold text-[#ff6b00] uppercase text-xs tracking-wider mb-2 font-heading">Ready to upgrade your school's pedagogy?</p>
-                  <p className="text-slate-600 text-sm max-w-2xl mx-auto leading-relaxed mb-6 dark:text-slate-300">
-                    Reach out to us on WhatsApp to discuss your staff size, select your preferred training dates, and secure your school's slot.
-                  </p>
-                  <a 
-                    href="https://wa.link/lbfcan" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 bg-[#ff6b00] hover:bg-[#e05e00] text-white px-6 py-3 rounded-full font-black text-sm uppercase tracking-wider transition-all duration-300 shadow-md"
-                  >
-                    <PhoneCall className="w-4 h-4 animate-pulse text-white" /> Book on WhatsApp <ExternalLink className="inline w-3 h-3 ml-1" />
-                  </a>
-                </div>
-
-                {/* Big Button CTA */}
-                <div className="text-center">
-                  <a 
-                    href="https://wa.link/lbfcan" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="inline-flex bg-[#25D366] hover:bg-[#20ba5a] text-white px-8 py-4.5 rounded-full font-black text-sm md:text-base hover:scale-105 transition-all duration-300 shadow-xl uppercase tracking-wider"
-                  >
-                    BOOK SCHOOL TRAINING VIA WHATSAPP <ExternalLink className="w-5 h-5 ml-2.5 text-white" />
-                  </a>
-                </div>
-
-              </motion.div>
-            )}
 
           </AnimatePresence>
         </div>

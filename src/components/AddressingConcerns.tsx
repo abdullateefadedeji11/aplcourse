@@ -12,7 +12,7 @@ export function AddressingConcerns() {
   const faqs = [
     {
       q: "\"I don't have the time during the week for this.\"",
-      a: "We completely eliminated the weekday stress! Every participant gets instant access to all their pre-recorded videos to watch anytime, along with a 24/7 dedicated WhatsApp support group. Furthermore, for our Advanced and School tiers, all live review sessions are held on weekends (Saturdays)."
+      a: "We completely eliminated the weekday stress! Every participant gets instant access to all their pre-recorded videos to watch anytime, along with a 24/7 dedicated WhatsApp support group. Furthermore, for our Advanced tier, all live review sessions are held on weekends (Saturdays)."
     },
     {
       q: "\"I am not very tech-savvy. Will I struggle?\"",

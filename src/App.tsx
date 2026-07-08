@@ -18,7 +18,8 @@ import {
   Moon, 
   Sun, 
   GraduationCap, 
-  Building
+  Building,
+  MonitorPlay
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -26,7 +27,6 @@ import { motion, AnimatePresence } from 'motion/react';
 import { SafeImage } from './components/SafeImage';
 import { WebinarSummary } from './components/WebinarSummary';
 import { WhoIsThisCourseFor } from './components/WhoIsThisCourseFor';
-import { WhatYouWillLearn } from './components/WhatYouWillLearn';
 import { ProofOfCreation } from './components/ProofOfCreation';
 import { MeetTheFacilitator } from './components/MeetTheFacilitator';
 import { AddressingConcerns } from './components/AddressingConcerns';
@@ -41,7 +41,7 @@ export default function App() {
     return 'light';
   });
 
-  const [selectedPath, setSelectedPath] = useState<'basic' | 'advanced' | 'school' | null>(null);
+  const [selectedPath, setSelectedPath] = useState<'masterclass' | 'basic' | 'advanced' | 'school' | null>(null);
   const detailsRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -54,7 +54,7 @@ export default function App() {
   }, [theme]);
 
   const [timeLeft, setTimeLeft] = useState(() => {
-    const difference = +new Date("2026-07-11T17:00:00") - +new Date();
+    const difference = +new Date("2026-07-17T17:00:00") - +new Date();
     if (difference > 0) {
       return {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -69,7 +69,7 @@ export default function App() {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      const difference = +new Date("2026-07-11T17:00:00") - +new Date();
+      const difference = +new Date("2026-07-17T17:00:00") - +new Date();
       if (difference > 0) {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
@@ -87,7 +87,7 @@ export default function App() {
     return () => clearInterval(timer);
   }, []);
 
-  const handleSelectPath = (path: 'basic' | 'advanced' | 'school') => {
+  const handleSelectPath = (path: 'masterclass' | 'basic' | 'advanced' | 'school') => {
     setSelectedPath(path);
     setTimeout(() => {
       detailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -97,11 +97,17 @@ export default function App() {
   const renderThreeButtonCTA = (titleText = "Ready to choose your path?") => {
     return (
       <div className="py-12 bg-slate-50 border-t border-b border-slate-200/60 dark:bg-slate-900/40 dark:border-slate-800 transition-colors duration-300">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="max-w-5xl mx-auto px-4 text-center">
           <p className="text-xs uppercase font-black tracking-widest text-[#ff6b00] mb-4 font-heading">
             {titleText}
           </p>
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
+          <div className="flex flex-col sm:flex-row justify-center items-center gap-4 flex-wrap">
+            <button 
+              onClick={() => handleSelectPath('masterclass')}
+              className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#ff6b00] border border-[#ff6b00]/30 hover:bg-[#ff6b00]/10 rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-sm font-heading cursor-pointer dark:bg-slate-800 dark:text-orange-400 dark:border-slate-700 dark:hover:bg-slate-700"
+            >
+              Masterclass Only 👉
+            </button>
             <button 
               onClick={() => handleSelectPath('basic')}
               className="w-full sm:w-auto px-6 py-3.5 bg-white text-[#ff6b00] border border-[#ff6b00]/30 hover:bg-[#ff6b00]/10 rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-sm font-heading cursor-pointer dark:bg-slate-800 dark:text-orange-400 dark:border-slate-700 dark:hover:bg-slate-700"
@@ -140,7 +146,7 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
           <div className="flex items-center gap-2 text-xs md:text-sm font-black tracking-wide uppercase font-heading">
             <span className="inline-flex h-2 w-2 rounded-full bg-white animate-ping"></span>
-            🚨 July 11th Masterclass is Live! (5:00 PM Saturday)
+            🚨 July 17th: Profitable AI-Powered Educator Masterclass is Live!
           </div>
           <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider bg-black/25 px-3.5 py-1 rounded-full border border-white/10 font-mono text-white">
             ⏰ {timeLeft.isExpired ? "Masterclass In Session" : `Closes in: ${timeLeft.days}d : ${timeLeft.hours}h : ${timeLeft.minutes}m : ${timeLeft.seconds}s`}
@@ -299,12 +305,38 @@ export default function App() {
             Choose Your <span className="text-[#ff6b00]">Transformation Path</span>
           </h2>
           <p className="text-slate-600 max-w-2xl mx-auto mb-12 text-sm md:text-base dark:text-slate-300">
-            Click one of the three options below to reveal full course materials, exclusive bonuses, WhatsApp support benefits, and secure pricing.
+            Click one of the options below to reveal full course materials, exclusive bonuses, WhatsApp support benefits, and secure pricing.
           </p>
           
           {/* Pill Selector Buttons */}
-          <div className="flex flex-col md:flex-row justify-center items-stretch gap-4 md:gap-5 max-w-4xl mx-auto">
+          <div className="flex flex-col lg:flex-row justify-center items-stretch gap-4 md:gap-5 max-w-6xl mx-auto">
             
+            {/* Button: Masterclass */}
+            <button 
+              id="btn-select-masterclass"
+              onClick={() => handleSelectPath('masterclass')}
+              className={`flex-1 flex flex-col justify-between items-center text-center p-6 rounded-3xl border transition-all duration-300 cursor-pointer ${
+                selectedPath === 'masterclass' 
+                  ? 'bg-[#ff6b00] text-white border-[#ff6b00] shadow-xl shadow-[#ff6b00]/30 scale-105' 
+                  : 'bg-white text-slate-800 border-slate-200 hover:border-[#ff6b00]/40 dark:bg-slate-850 dark:border-slate-800 dark:text-white dark:hover:border-[#ff6b00]/30'
+              }`}
+            >
+              <div className="flex flex-col items-center">
+                <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${selectedPath === 'masterclass' ? 'bg-white/20' : 'bg-slate-100 dark:bg-slate-800'}`}>
+                  <MonitorPlay className={`w-6 h-6 ${selectedPath === 'masterclass' ? 'text-white' : 'text-[#ff6b00]'}`} />
+                </div>
+                <span className="font-heading font-black text-sm md:text-base tracking-wide uppercase">
+                  Masterclass Only
+                </span>
+                <p className={`text-xs mt-2 font-light max-w-[200px] ${selectedPath === 'masterclass' ? 'text-white/80' : 'text-slate-500'}`}>
+                  The 3-Day Live Implementation Workshop.
+                </p>
+              </div>
+              <span className={`mt-5 px-4.5 py-1.5 rounded-full text-xs font-black uppercase tracking-wider ${selectedPath === 'masterclass' ? 'bg-white text-[#ff6b00]' : 'bg-[#ff6b00] text-white'}`}>
+                Explore Masterclass
+              </span>
+            </button>
+
             {/* Button A: Basic */}
             <button 
               onClick={() => handleSelectPath('basic')}
@@ -409,24 +441,156 @@ export default function App() {
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <button 
+                    onClick={() => handleSelectPath('masterclass')} 
+                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 cursor-pointer"
+                  >
+                    Masterclass Only
+                  </button>
+                  <button 
                     onClick={() => handleSelectPath('basic')} 
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 cursor-pointer"
                   >
                     Basic Course
                   </button>
                   <button 
                     onClick={() => handleSelectPath('advanced')} 
-                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:hover:bg-slate-700"
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:hover:bg-slate-700 cursor-pointer"
                   >
                     Advanced Course
                   </button>
                   <button 
                     onClick={() => handleSelectPath('school')} 
-                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700"
+                    className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold px-5 py-2.5 rounded-full text-xs uppercase tracking-wide transition-all dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700 cursor-pointer"
                   >
                     School Owner
                   </button>
                 </div>
+              </motion.div>
+            )}
+
+            {/* PATH: MASTERCLASS ONLY */}
+            {selectedPath === 'masterclass' && (
+              <motion.div
+                key="masterclass-only"
+                initial={{ opacity: 0, scale: 0.98, y: 20 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98, y: -20 }}
+                transition={{ duration: 0.35 }}
+                className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:bg-slate-900 dark:border-slate-800 text-left"
+              >
+                <div className="flex flex-wrap justify-between items-start gap-4 mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
+                  <div>
+                    <span className="text-[#ff6b00] font-black tracking-widest uppercase text-xs font-heading bg-[#ff6b00]/10 px-3 py-1.5 rounded-md">Live Workshop</span>
+                    <h3 className="text-2xl md:text-4xl font-black text-slate-900 mt-3 font-heading dark:text-white">
+                      The Profitable AI-Powered Educator 3-Day Masterclass
+                    </h3>
+                  </div>
+                  <div className="text-right">
+                    <p className="text-xs text-slate-400 uppercase tracking-widest font-bold">Standard Ticket</p>
+                    <p className="text-3xl font-black text-[#ff6b00] font-heading">₦10,000</p>
+                    <p className="text-xs text-slate-400 line-through">₦20,000</p>
+                  </div>
+                </div>
+
+                <div className="bg-[#ff6b00]/5 border-l-4 border-[#ff6b00] p-6 rounded-r-2xl mb-10 dark:bg-slate-800/50">
+                  <h4 className="font-heading font-extrabold text-lg text-slate-900 mb-2 dark:text-white">
+                    3-Day Intensive Live Implementation Workshop 🚨
+                  </h4>
+                  <p className="text-slate-600 text-sm md:text-base leading-relaxed dark:text-slate-300">
+                    This ticket is strictly for the 3-day tech workshop starting July 17th. 
+                    <strong className="text-red-500 block mt-2">⚠️ PLEASE NOTE: This does NOT include the full 12-Module APL Pedagogy Course or self-paced video library access.</strong>
+                  </p>
+                </div>
+
+                {/* Bold CTA to upgrade */}
+                <div className="bg-orange-500 text-white p-6 md:p-8 rounded-3xl mb-10 shadow-lg text-center relative overflow-hidden">
+                  <div className="absolute right-[-10%] bottom-[-10%] w-[30%] h-[50%] bg-white/10 rounded-full blur-[60px] pointer-events-none"></div>
+                  <p className="font-heading font-black text-lg md:text-xl mb-2">
+                    💡 SMART MOVE: Upgrade to the Advanced Course
+                  </p>
+                  <p className="text-sm md:text-base text-orange-100 mb-5 leading-relaxed">
+                    Get the 12-Module APL Pedagogy Course for just <strong>₦2,000 more</strong> and receive this 3-Day Live Masterclass ticket <strong>100% FREE</strong> (Total Value: ₦35,000).
+                  </p>
+                  <button 
+                    onClick={() => handleSelectPath('advanced')}
+                    className="inline-flex bg-white text-[#ff6b00] hover:bg-slate-100 px-6 py-3 rounded-full font-black text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-md cursor-pointer"
+                  >
+                    Upgrade to Advanced for ₦12,000 👉
+                  </button>
+                </div>
+
+                {/* What's inside Masterclass Schedule */}
+                <div className="mb-10">
+                  <h4 className="font-heading font-black text-lg text-slate-900 mb-6 uppercase tracking-wider flex items-center gap-2 dark:text-white">
+                    <Award className="text-[#ff6b00] w-5 h-5" /> Masterclass Live Schedule
+                  </h4>
+                  <div className="space-y-4">
+                    <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl dark:bg-slate-850 dark:border-slate-800">
+                      <h5 className="font-bold text-slate-900 dark:text-white font-heading">Day 1: Foundation of AI Pedagogy & Platforms</h5>
+                      <p className="text-slate-600 text-sm mt-1 dark:text-slate-300">AI business models, advanced Gemini/NotebookLM, and zero-code web design with Gemini Canvas.</p>
+                    </div>
+                    <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl dark:bg-slate-850 dark:border-slate-800">
+                      <h5 className="font-bold text-slate-900 dark:text-white font-heading">Day 2: Brand Visibility & Web App Engineering</h5>
+                      <p className="text-slate-600 text-sm mt-1 dark:text-slate-300">Content calendars, web application development, visual branding, and live app deployment.</p>
+                    </div>
+                    <div className="bg-slate-50 border border-slate-100 p-5 rounded-2xl dark:bg-slate-850 dark:border-slate-800">
+                      <h5 className="font-bold text-slate-900 dark:text-white font-heading">Day 3: Advanced Content & Monetization</h5>
+                      <p className="text-slate-600 text-sm mt-1 dark:text-slate-300">AI-powered video editing and packaging your knowledge for maximum profitability.</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Real Bank Account Instructions Container */}
+                <div className="bg-slate-50 p-6 rounded-3xl border border-slate-200/60 mb-10 dark:bg-slate-850 dark:border-slate-800">
+                  <h4 className="font-heading font-bold text-slate-900 mb-4 dark:text-white uppercase text-xs tracking-wider text-left">
+                    How To Secure Your Seat (Masterclass Only):
+                  </h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 text-left">
+                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm dark:bg-slate-900 dark:border-slate-850">
+                      <p className="font-bold text-slate-500 mb-1 text-[10px] uppercase tracking-wider">🇳🇬 Nigeria Bank Transfer:</p>
+                      <p className="font-mono text-2xl font-black text-slate-900 tracking-widest select-all dark:text-white">0100020970</p>
+                      <p className="font-bold text-slate-800 text-xs dark:text-slate-300 mt-0.5">Abdullateef Adedeji</p>
+                      <p className="font-bold text-[#ff6b00] text-xs uppercase mt-1 font-heading">Sterling Bank (Naira)</p>
+                    </div>
+                    <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-center dark:bg-slate-900 dark:border-slate-850">
+                      <p className="font-bold text-slate-500 mb-2 text-[10px] uppercase tracking-wider">🌍 International Cards:</p>
+                      <a 
+                        href="https://geacademy.selar.com/aplbasiccourse" 
+                        target="_blank" 
+                        rel="noopener noreferrer" 
+                        className="block bg-gradient-to-r from-[#ff6b00] to-red-600 text-white text-center py-2.5 rounded-lg font-black text-xs uppercase tracking-wider hover:opacity-90 transition-all"
+                      >
+                        Pay Online Securely via Selar <ExternalLink className="inline w-3 h-3 ml-1" />
+                      </a>
+                    </div>
+                  </div>
+                  <div className="mt-4 flex flex-col sm:flex-row justify-between items-center gap-3 pt-4 border-t border-slate-200/60 dark:border-slate-800">
+                    <p className="text-slate-500 text-xs dark:text-slate-400">
+                      *After making your bank transfer, send a direct message with your receipt on WhatsApp to complete enrollment instantly.
+                    </p>
+                    <a 
+                      href="https://wa.link/pd09oa" 
+                      target="_blank" 
+                      rel="noopener noreferrer" 
+                      className="bg-[#25D366] hover:bg-[#20ba5a] text-white text-center px-5 py-2.5 rounded-lg font-black text-xs uppercase tracking-wider transition-all dark:bg-slate-800 dark:hover:bg-slate-700 flex items-center gap-1.5 shadow-md"
+                    >
+                      <MessageSquare className="w-4 h-4 fill-white" /> Confirm on WhatsApp <ExternalLink className="inline w-3 h-3 ml-1" />
+                    </a>
+                  </div>
+                </div>
+
+                {/* Big Button CTA */}
+                <div className="text-center">
+                  <a 
+                    href="https://geacademy.selar.com/aplbasiccourse" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex bg-[#ff6b00] text-white px-8 py-4.5 rounded-full font-black text-sm md:text-base hover:scale-105 transition-all duration-300 shadow-xl shadow-[#ff6b00]/30 uppercase tracking-wider"
+                  >
+                    GET MASTERCLASS ONLY TICKET <ArrowRight className="w-5 h-5 ml-2.5 animate-pulse text-white" />
+                  </a>
+                </div>
+
               </motion.div>
             )}
 
@@ -438,7 +602,7 @@ export default function App() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98, y: -20 }}
                 transition={{ duration: 0.35 }}
-                className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:bg-slate-900 dark:border-slate-800"
+                className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:bg-slate-900 dark:border-slate-800 text-left"
               >
                 <div className="flex flex-wrap justify-between items-start gap-4 mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
                   <div>
@@ -461,6 +625,9 @@ export default function App() {
                   <p className="text-slate-600 text-sm md:text-base leading-relaxed dark:text-slate-300">
                     Acquire foundational skills to eliminate repetitive tasks, automate lesson prep, and transition from dry lecturing to collaborative, engaging facilitation.
                   </p>
+                  <p className="text-[#ff6b00] text-sm font-bold mt-3 font-heading">
+                    💡 Optional Upgrade: Add the Live Masterclass at checkout for a 50% discount (Total: ₦12,500).
+                  </p>
                 </div>
 
                 {/* Inside curriculum */}
@@ -474,9 +641,9 @@ export default function App() {
                       { num: 2, text: "Demystify artificial intelligence and master the exact language needed to command AI tools." },
                       { num: 3, text: "Develop an AI mindset to equip the 2030 innovator while designing ethical, cheat-proof assessments." },
                       { num: 4, text: "Master the AI-Powered Flipped Classroom to build true 21st-century innovators." },
-                      { num: 5, text: "Automate brilliance with the ChatGPT lesson design masterclass and rapid visual slide creation." },
-                      { num: 6, text: "Animate your lessons and master mobile screen recording in the Instant Video Factory." },
-                      { num: 7, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." }
+                      { num: 5, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." },
+                      { num: 6, text: "Build your own customized, highly engaging personal AI textbook in just 10 minutes." },
+                      { num: 7, text: "Transform dry subjects into captivating edutainment by producing educational music videos with AI." }
                     ].map((mod) => (
                       <li key={mod.num} className="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex gap-4 items-start dark:bg-slate-850 dark:border-slate-800">
                         <span className="w-8 h-8 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black text-sm flex-shrink-0 shadow-sm dark:bg-slate-800">
@@ -595,11 +762,21 @@ export default function App() {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.98, y: -20 }}
                 transition={{ duration: 0.35 }}
-                className="bg-white border border-slate-200 rounded-[2.5rem] p-8 md:p-12 shadow-xl dark:bg-slate-900 dark:border-slate-800"
+                className="bg-white border-2 border-[#ff6b00] rounded-[2.5rem] p-8 md:p-12 shadow-2xl dark:bg-slate-900 dark:border-slate-800 text-left relative overflow-hidden"
               >
+                {/* HIGHLY VISIBLE "BEST VALUE" BANNER */}
+                <div className="bg-gradient-to-r from-red-600 via-orange-500 to-yellow-500 text-white text-center py-3.5 px-6 rounded-2xl mb-8 shadow-md">
+                  <p className="font-heading font-black tracking-widest uppercase text-xs md:text-sm animate-pulse">
+                    🔥 BEST VALUE TICKET 🔥
+                  </p>
+                  <p className="text-xs md:text-sm font-semibold mt-1">
+                    Includes the full 12-Module Course AND a <strong className="underline">100% FREE</strong>, all-access ticket to the ₦10,000 Live Masterclass!
+                  </p>
+                </div>
+
                 <div className="flex flex-wrap justify-between items-start gap-4 mb-8 pb-6 border-b border-slate-100 dark:border-slate-800">
                   <div>
-                    <span className="text-[#ff6b00] font-black tracking-widest uppercase text-xs font-heading bg-[#ff6b00]/10 px-3 py-1.5 rounded-md">Path 2</span>
+                    <span className="text-[#ff6b00] font-black tracking-widest uppercase text-xs font-heading bg-[#ff6b00]/10 px-3 py-1.5 rounded-md">Path 2 (Recommended)</span>
                     <h3 className="text-2xl md:text-4xl font-black text-slate-900 mt-3 font-heading dark:text-white">
                       The AI-Powered Learning Advanced Course
                     </h3>
@@ -821,6 +998,33 @@ export default function App() {
                           <span><strong>Impact:</strong> Rapid automation, low-tech implementation strategies, and transition to active learning.</span>
                         </li>
                       </ul>
+
+                      {/* Replicated Basic Curriculum */}
+                      <div className="mt-6 pt-6 border-t border-slate-200/60 dark:border-slate-700/50">
+                        <p className="font-heading font-extrabold text-xs text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                          <BookOpen className="w-4 h-4 text-[#ff6b00]" /> Basic Curriculum Modules (1-7)
+                        </p>
+                        <div className="space-y-3">
+                          {[
+                            { num: 1, text: "Shift your pedagogy from a traditional 'tape recorder' to a visionary global guide." },
+                            { num: 2, text: "Demystify artificial intelligence and master the exact language needed to command AI tools." },
+                            { num: 3, text: "Develop an AI mindset to equip the 2030 innovator while designing ethical, cheat-proof assessments." },
+                            { num: 4, text: "Master the AI-Powered Flipped Classroom to build true 21st-century innovators." },
+                            { num: 5, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." },
+                            { num: 6, text: "Build your own customized, highly engaging personal AI textbook in just 10 minutes." },
+                            { num: 7, text: "Transform dry subjects into captivating edutainment by producing educational music videos with AI." }
+                          ].map((mod) => (
+                            <div key={mod.num} className="flex gap-2.5 items-start">
+                              <span className="w-5 h-5 rounded-md bg-[#ff6b00]/10 text-[#ff6b00] flex items-center justify-center font-bold text-[10px] flex-shrink-0">
+                                {mod.num}
+                              </span>
+                              <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">
+                                {mod.text}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -856,6 +1060,38 @@ export default function App() {
                           <span><strong>Impact:</strong> Full digital integration, automated assessments, rapid visual creation, and sustainable cloud workspace.</span>
                         </li>
                       </ul>
+
+                      {/* Replicated Advanced Curriculum */}
+                      <div className="mt-6 pt-6 border-t border-slate-800">
+                        <p className="font-heading font-extrabold text-xs text-slate-200 uppercase tracking-wider mb-4 flex items-center gap-1.5">
+                          <Award className="w-4 h-4 text-[#ff6b00]" /> Advanced Curriculum Modules (1-12)
+                        </p>
+                        <div className="space-y-3">
+                          {[
+                            { num: 1, text: "Shift your pedagogy from a traditional 'tape recorder' to a visionary global guide." },
+                            { num: 2, text: "Demystify artificial intelligence and master the exact language needed to command AI tools." },
+                            { num: 3, text: "Develop an AI mindset to equip the 2030 innovator while designing ethical, cheat-proof assessments." },
+                            { num: 4, text: "Master the AI-Powered Flipped Classroom to build true 21st-century innovators." },
+                            { num: 5, text: "Automate brilliance with the ChatGPT lesson design masterclass and rapid visual slide creation." },
+                            { num: 6, text: "Animate your lessons and master mobile screen recording in the Instant Video Factory." },
+                            { num: 7, text: "Implement high-impact, low-tech AI solutions that work in absolutely every classroom environment." },
+                            { num: 8, text: "Build your own customized, highly engaging personal AI textbook in just 10 minutes." },
+                            { num: 9, text: "Transform dry subjects into captivating edutainment by producing educational music videos with AI." },
+                            { num: 10, text: "Create a gamified classroom with automated, interactive assessments to boost student engagement." },
+                            { num: 11, text: "Achieve a sustainable classroom through seamless cloud organization with Google Drive." },
+                            { num: 12, text: "Structure your ultimate Digital Command Center using Google Classroom." }
+                          ].map((mod) => (
+                            <div key={mod.num} className="flex gap-2.5 items-start">
+                              <span className="w-5 h-5 rounded-md bg-slate-850 text-[#ff6b00] border border-slate-700/50 flex items-center justify-center font-bold text-[10px] flex-shrink-0">
+                                {mod.num}
+                              </span>
+                              <p className="text-slate-300 text-xs leading-relaxed">
+                                {mod.text}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
@@ -941,26 +1177,11 @@ export default function App() {
       {/* 3. Who is this course for Section */}
       <WhoIsThisCourseFor />
 
-      {/* 4. Three button CTA after "Who is this course for" */}
-      {renderThreeButtonCTA("Ready to transform your classroom? Choose your path:")}
-
-      {/* 5. What you will learn to create Section */}
-      <WhatYouWillLearn />
-
-      {/* 6. Three button CTA after "What you will learn to create" */}
-      {renderThreeButtonCTA("Select a package to start creating:")}
-
       {/* 7. FAQ / Break objections Section */}
       <AddressingConcerns />
 
-      {/* 8. Three button CTA after breaking objections */}
-      {renderThreeButtonCTA("Dismantled all doubts? Join us today:")}
-
       {/* 9. Proof of Creation Bento Sandbox */}
       <ProofOfCreation />
-
-      {/* 10. Three button CTA after Proof of Creation */}
-      {renderThreeButtonCTA("Ready to build these assets? Choose your path:")}
 
       {/* 11. Meet the facilitator Section */}
       <MeetTheFacilitator />

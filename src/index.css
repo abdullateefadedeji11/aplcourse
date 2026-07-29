@@ -1,19 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
 @import "tailwindcss";
 
 @variant dark (&:where(.dark, .dark *));
 
 @theme {
-  --font-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --font-heading: "Montserrat", sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Outfit", "Plus Jakarta Sans", sans-serif;
   --font-mono: "JetBrains Mono", monospace;
   
-  --color-brand-dark: #0b1120;
-  --color-brand-navy: #0b1120;
-  --color-brand-slate: #1e293b;
-  --color-brand-orange: #ff6b00;
-  --color-brand-orange-hover: #ea580c;
-  --color-gold: #fbbf24;
+  --color-serene-bg: #FAF8F5;
+  --color-serene-card: #FFFFFF;
+  --color-serene-slate: #1E293B;
+  --color-serene-navy: #0F172A;
+  --color-serene-amber: #D97706;
+  --color-serene-amber-hover: #B45309;
+  --color-serene-gold: #CA8A04;
+  --color-serene-gold-light: #FEF3C7;
 }
 
 /* Custom Scrollbar */
@@ -21,261 +23,71 @@
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f1f5f9;
+  background: #f1f0ec;
 }
 ::-webkit-scrollbar-thumb {
   background: #cbd5e1;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #ff6b00;
+  background: #d97706;
 }
 
-/* Glassmorphism Styles (Optimized for premium light mode) */
+/* Glassmorphism Styles (Optimized for serene light mode) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(217, 119, 6, 0.08);
 }
 
 .glass-panel-hover {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .glass-panel-hover:hover {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 107, 0, 0.3);
+  background: rgba(255, 255, 255, 0.98);
+  border-color: rgba(217, 119, 6, 0.25);
   transform: translateY(-4px);
-  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
 }
 
-.glass-panel-heavy {
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-}
-
-.glass-panel-orange {
-  background: rgba(255, 107, 0, 0.04);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 107, 0, 0.15);
-}
-
-.glass-panel-orange-heavy {
-  background: rgba(255, 107, 0, 0.08);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 107, 0, 0.25);
-}
-
-.glass-tag {
-  background: rgba(15, 23, 42, 0.04);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(15, 23, 42, 0.06);
-}
-
-.text-gradient-white {
+.text-gradient-navy {
   background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-.text-gradient-orange {
-  background: linear-gradient(135deg, #ff6b00 0%, #ff9800 100%);
+.text-gradient-amber {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 4s infinite ease-in-out;
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-.animate-float {
-  animation: float 6s infinite ease-in-out;
-}
-
 /* ==========================================
-   PREMIUM DARK MODE OVERRIDES (Tailwind v4)
+   SERENE DARK MODE OVERRIDES
    ========================================== */
 
-/* 1. Global Background & Text */
 .dark, .dark body {
-  background-color: #0b1120 !important;
+  background-color: #0b1320 !important;
   color: #f1f5f9 !important;
 }
 
-.dark div[class*="bg-[#f8fafc]"] {
-  background-color: #0b1120 !important;
-}
-
-/* 2. Text elements */
-.dark p, 
-.dark span:not(.text-[#ff6b00]):not(.bg-[#ff6b00]),
-.dark li:not(.text-[#ff6b00]),
-.dark blockquote {
-  color: #94a3b8 !important; /* slate-400 */
-}
-
-/* Keep headings bright and white */
-.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6,
-.dark .text-slate-900, .dark .text-slate-800 {
+.dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6 {
   color: #ffffff !important;
 }
 
-.dark .text-slate-600, .dark .text-slate-500 {
-  color: #94a3b8 !important;
+.dark p, .dark li, .dark span:not(.text-amber-500):not(.text-amber-600) {
+  color: #94a3b8;
 }
 
-.dark .text-slate-300 {
-  color: #cbd5e1 !important;
+.dark .bg-white {
+  background-color: #111c2e !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-.dark .text-slate-400 {
-  color: #94a3b8 !important;
+.dark .border-slate-200, .dark .border-slate-100 {
+  border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
-/* 3. Sticky Navigation Bar */
-.dark nav {
-  background-color: rgba(11, 17, 32, 0.85) !important;
-  border-color: rgba(51, 65, 85, 0.45) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-}
-
-.dark nav span {
-  color: #ffffff !important;
-}
-
-/* 4. Premium Cards & Containers */
-.dark .bg-white,
-.dark .glass-panel,
-.dark div[class*="bg-white/5"] {
-  background-color: rgba(30, 41, 59, 0.45) !important;
-  border-color: rgba(51, 65, 85, 0.45) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-}
-
-.dark .bg-slate-50,
-.dark .bg-slate-50\/60,
-.dark div[class*="bg-slate-50"] {
-  background-color: rgba(15, 23, 42, 0.6) !important;
-  border-color: rgba(51, 65, 85, 0.4) !important;
-}
-
-.dark .border-slate-200, 
-.dark .border-slate-100 {
-  border-color: rgba(51, 65, 85, 0.4) !important;
-}
-
-/* Special Treatment for Live Webinar MacBook Mockup & Inner Box */
-.dark div[class*="bg-slate-100"] {
-  background-color: rgba(15, 23, 42, 0.8) !important;
-}
-
-/* 5. Pricing Cards */
-.dark .bg-blue-50 {
-  background-color: rgba(29, 78, 216, 0.15) !important;
-  color: #60a5fa !important;
-  border-color: rgba(59, 130, 246, 0.3) !important;
-}
-
-.dark .text-blue-600 {
-  color: #60a5fa !important;
-}
-
-.dark .bg-yellow-100 {
-  background-color: rgba(234, 179, 8, 0.15) !important;
-  color: #facc15 !important;
-  border-color: rgba(234, 179, 8, 0.3) !important;
-}
-
-.dark .text-yellow-800 {
-  color: #facc15 !important;
-}
-
-.dark .text-green-600 {
-  color: #4ade80 !important;
-}
-
-.dark .bg-green-500\/10 {
-  background-color: rgba(74, 222, 128, 0.1) !important;
-}
-
-.dark .border-green-500\/20 {
-  border-color: rgba(74, 222, 128, 0.25) !important;
-}
-
-.dark .bg-orange-50 {
-  background-color: rgba(255, 107, 0, 0.12) !important;
-  color: #ff6b00 !important;
-  border-color: rgba(255, 107, 0, 0.3) !important;
-}
-
-/* 6. Form elements */
-.dark input, 
-.dark textarea {
-  background-color: rgba(15, 23, 42, 0.8) !important;
-  border-color: rgba(51, 65, 85, 0.5) !important;
-  color: #ffffff !important;
-}
-
-/* 7. Floating details or decorative lines */
-.dark hr {
-  border-color: rgba(51, 65, 85, 0.4) !important;
-}
-
-/* Adjust gradients to stand out on dark canvas */
-.dark .from-slate-900 {
-  --tw-gradient-from: #ffffff !important;
-  --tw-gradient-to: #94a3b8 !important;
-  color: transparent !important;
-}
-
-/* Preserving Orange buttons text brightness */
-.dark a.bg-[#ff6b00], 
-.dark button.bg-[#ff6b00], 
-.dark .bg-[#ff6b00] text-white,
-.dark a.bg-slate-900,
-.dark .bg-gradient-to-r.from-\[\#ff6b00\],
-.dark button[class*="bg-slate-900"],
-.dark a[class*="bg-slate-900"] {
-  color: #ffffff !important;
-  -webkit-text-fill-color: initial !important;
-}
-
-.dark .bg-slate-900 {
-  background-color: #f8fafc !important;
-  color: #0f172a !important;
-}
-
-.dark .bg-slate-900 span,
-.dark .bg-slate-900 p,
-.dark .bg-slate-900 h3 {
-  color: #0f172a !important;
-}
 
 

@@ -45,7 +45,6 @@ export default function App() {
 
   const [expandedSilver, setExpandedSilver] = useState<boolean>(true);
   const [expandedGold, setExpandedGold] = useState<boolean>(true);
-  const [showSchoolDetails, setShowSchoolDetails] = useState<boolean>(false);
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
@@ -65,18 +64,18 @@ export default function App() {
       {/* Top Serene Announcement Header */}
       <div className="bg-slate-900 text-amber-100 text-xs md:text-sm py-2.5 px-4 text-center font-medium border-b border-slate-800 dark:bg-slate-950">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-center items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 font-semibold text-amber-400">
+          <span className="inline-flex items-center gap-1.5 font-bold text-amber-400 font-heading">
             <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-            Profitable AI-Powered Educators Academy (PAPEA)
+            Growth-minded Educators Academy (GEA)
           </span>
           <span className="hidden sm:inline text-slate-600">•</span>
-          <span>Transforming Over 1 Million African Educators into Profitable Digital Leaders</span>
+          <span>Profitable AI-Powered Educators Academy (PAPEA 2026)</span>
         </div>
       </div>
 
       {/* Navigation Header */}
       <nav className="w-full bg-[#FAF8F5]/90 backdrop-blur-md border-b border-slate-200/70 sticky top-0 z-40 transition-colors duration-300 dark:bg-[#0b1320]/90 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
           <div className="flex items-center gap-3">
             <SafeImage 
               src="/gea_logo.png" 
@@ -85,8 +84,8 @@ export default function App() {
               className="h-10 w-auto object-contain rounded-lg border border-amber-200/50 p-1 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900" 
             />
             <div className="flex flex-col">
-              <span className="font-heading font-bold text-xs text-amber-700 tracking-wider uppercase dark:text-amber-400">
-                PAPEA 2026
+              <span className="font-heading font-extrabold text-xs text-amber-700 tracking-wider uppercase dark:text-amber-400">
+                Growth-minded Educators Academy
               </span>
               <span className="font-heading font-extrabold text-sm md:text-base tracking-tight text-slate-900 dark:text-white">
                 Profitable AI-Powered <span className="text-amber-600">Educators Academy</span>
@@ -364,7 +363,7 @@ export default function App() {
                     "Module 4: Automated Lesson Planning & Resource Creation (10-Min Prep)",
                     "Module 5: Instructional Video Production & AI Mobile Editing",
                     "Module 6: Advanced AI Research & Zero-Code Web Design",
-                    "Module 7: Gamification & Edutainment Mastery (Suno AI & Quizizz)",
+                    "Module 7: Gamification & Edutainment Mastery (Sonauto AI & Quizizz)",
                     "Module 8: Digital Classroom Ecosystem & Cloud Workspace (Drive/Classroom)",
                     "Module 9: The Business of Teaching & Brand Visibility"
                   ].map((modText, idx) => (
@@ -527,57 +526,6 @@ export default function App() {
                 <MessageSquare className="w-4 h-4 fill-white" /> Confirm Payment via WhatsApp <ExternalLink className="w-3 h-3" />
               </a>
             </div>
-          </div>
-
-          {/* School Packages Dropdown/Toggle */}
-          <div className="mt-12 text-center">
-            <button 
-              onClick={() => setShowSchoolDetails(prev => !prev)}
-              className="inline-flex items-center gap-2 text-xs md:text-sm font-bold text-slate-600 hover:text-amber-700 dark:text-slate-300 dark:hover:text-amber-400 bg-stone-100 dark:bg-slate-800 px-5 py-2.5 rounded-full border border-stone-200 dark:border-slate-700 transition-all cursor-pointer"
-            >
-              <Building className="w-4 h-4 text-amber-600" />
-              {showSchoolDetails ? "Hide School & Institutional Packages ▲" : "Are you a School Owner or Principal? View Institutional Packages ▼"}
-            </button>
-
-            <AnimatePresence>
-              {showSchoolDetails && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  className="mt-6 text-left bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 p-6 md:p-8 rounded-3xl overflow-hidden shadow-sm"
-                >
-                  <h4 className="font-heading font-bold text-lg text-slate-900 dark:text-white mb-2">
-                    Institutional Training for Academic Staff 🏫
-                  </h4>
-                  <p className="text-slate-600 dark:text-slate-300 text-sm mb-6 leading-relaxed">
-                    Train your entire faculty with customized start dates that fit your school calendar.
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="p-5 bg-stone-50 dark:bg-slate-850 rounded-2xl border border-stone-200/60 dark:border-slate-800">
-                      <h5 className="font-bold text-slate-900 dark:text-white text-base">7-Day Basic Institutional Package</h5>
-                      <p className="text-amber-600 font-black text-lg font-heading my-1">₦40,000</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">Covers Modules 1 to 7 of the APL Framework for your entire teaching staff.</p>
-                    </div>
-                    <div className="p-5 bg-stone-50 dark:bg-slate-850 rounded-2xl border border-stone-200/60 dark:border-slate-800">
-                      <h5 className="font-bold text-slate-900 dark:text-white text-base">14-Day Advanced Institutional Package</h5>
-                      <p className="text-amber-600 font-black text-lg font-heading my-1">₦60,000</p>
-                      <p className="text-xs text-slate-500 dark:text-slate-400">Covers all 12 Modules of the APL Framework for complete institutional digitization.</p>
-                    </div>
-                  </div>
-                  <div className="mt-6 text-center">
-                    <a 
-                      href="https://wa.link/6685ik" 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="inline-flex items-center gap-2 bg-amber-600 hover:bg-amber-700 text-white px-6 py-2.5 rounded-full font-bold text-xs uppercase tracking-wider transition-all shadow-md"
-                    >
-                      Book School Staff Training on WhatsApp <ExternalLink className="w-3 h-3" />
-                    </a>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
           </div>
 
         </div>

@@ -22,7 +22,8 @@ import {
   TrendingUp,
   Flame,
   Globe,
-  DollarSign
+  DollarSign,
+  CheckSquare
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
@@ -34,6 +35,79 @@ import { MeetTheFacilitator } from './components/MeetTheFacilitator';
 import { AddressingConcerns } from './components/AddressingConcerns';
 import { Footer } from './components/Footer';
 
+interface ModuleItem {
+  num: number;
+  title: string;
+  focus: string;
+  isGoldOnly?: boolean;
+}
+
+const CURRICULUM_MODULES: ModuleItem[] = [
+  {
+    num: 1,
+    title: "Foundations of AI-Powered Learning",
+    focus: "Shifting from a traditional \"content dispenser\" to a 21st-century learning facilitator and understanding the core vision of AI integration in education."
+  },
+  {
+    num: 2,
+    title: "The AI Mindset & Prompt Engineering Mastery",
+    focus: "Demystifying how AI works, mastering the 5-S prompt framework, and designing \"cheat-proof\" assessments that build critical thinking."
+  },
+  {
+    num: 3,
+    title: "The AI-Powered Flipped Classroom Framework",
+    focus: "Inverting the traditional classroom model to reclaim administrative time, using AI to drive active, collaborative, student-led group learning."
+  },
+  {
+    num: 4,
+    title: "Automated Lesson Planning & Resource Creation",
+    focus: "Using ChatGPT, Manus, and Gemini to instantly generate detailed lesson plans, 10-slide presentation decks, and low-tech/offline learning resources."
+  },
+  {
+    num: 5,
+    title: "Instructional Video Production & AI Editing",
+    focus: "Mastering mobile screen recording and leveraging Google Vids/AI tools to shoot, edit, and auto-caption professional micro-learning videos."
+  },
+  {
+    num: 6,
+    title: "Advanced AI Research & Zero-Code Web Design",
+    focus: "Building a \"10-Minute Resource Factory\" with NotebookLM for deep-dive audio podcasts, and using Gemini Canvas for zero-code interactive web pages."
+  },
+  {
+    num: 7,
+    title: "Gamification & Edutainment Mastery",
+    focus: "Transforming dry lessons into highly engaging experiences using AI-generated music tracks/videos (Sonauto AI) and gamified assessments (Quizizz)."
+  },
+  {
+    num: 8,
+    title: "Digital Classroom Ecosystem & Cloud Management",
+    focus: "Establishing a highly organized, professional digital learning hub using Google Drive and Google Classroom to seamlessly distribute assets."
+  },
+  {
+    num: 9,
+    title: "The Business of Teaching & Brand Visibility",
+    focus: "Building your \"Personal Economy\" (the MEAT framework) and establishing an undeniable, highly professional digital footprint/CV using About.me."
+  },
+  {
+    num: 10,
+    title: "AI Content Strategy & Visual Branding",
+    focus: "Training AI to capture your brand voice, automating a 30-day social media content calendar, and generating agency-level promotional flyers.",
+    isGoldOnly: true
+  },
+  {
+    num: 11,
+    title: "Zero-Code Web Application Development",
+    focus: "\"Vibe Coding\" with Google AI Studio to build, test, and deploy functional, custom Single-Page Applications (SPAs) without writing code.",
+    isGoldOnly: true
+  },
+  {
+    num: 12,
+    title: "Product Packaging, Pricing & Sales Automation",
+    focus: "Mastering premium pricing psychology and setting up a fully automated digital storefront on Selar to sell your educational assets globally.",
+    isGoldOnly: true
+  }
+];
+
 export default function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window !== 'undefined') {
@@ -43,8 +117,7 @@ export default function App() {
     return 'light';
   });
 
-  const [expandedSilver, setExpandedSilver] = useState<boolean>(true);
-  const [expandedGold, setExpandedGold] = useState<boolean>(true);
+  const [activePackageTab, setActivePackageTab] = useState<'gold' | 'silver' | 'both'>('gold');
 
   useEffect(() => {
     localStorage.setItem('theme', theme);
@@ -54,6 +127,9 @@ export default function App() {
       document.documentElement.classList.remove('dark');
     }
   }, [theme]);
+
+  const silverModules = CURRICULUM_MODULES.filter(m => !m.isGoldOnly);
+  const goldModules = CURRICULUM_MODULES; // ALL 12 Modules shown for Gold
 
   return (
     <div className="bg-[#FAF8F5] text-slate-800 antialiased selection:bg-amber-600 selection:text-white relative min-h-screen font-sans overflow-x-hidden transition-colors duration-300 dark:bg-[#0b1320] dark:text-slate-100">
@@ -149,9 +225,10 @@ export default function App() {
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4">
             <a 
               href="#packages"
-              className="w-full sm:w-auto px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-amber-600/25 hover:scale-[1.02] text-center"
+              className="w-full sm:w-auto px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-amber-600/25 hover:scale-[1.02] text-center flex items-center justify-center gap-2"
             >
-              Explore Silver & Gold Packages 👉
+              <span>Explore Silver & Gold Packages</span>
+              <ArrowRight className="w-4 h-4" />
             </a>
             <a 
               href="#silent-crisis"
@@ -301,192 +378,361 @@ export default function App() {
             PAPEA is not a basic tutorial on search engines. It is a comprehensive, high-ticket digital transformation incubator built specifically for ambitious teachers ready to scale their impact and income.
           </p>
           <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/30 px-6 py-3 rounded-full text-amber-300 font-bold text-xs md:text-sm uppercase tracking-wider">
-            Choose Between Two Comprehensive Mastery Packages Below 👇
+            <span>Explore the Complete 12-Module Curriculum & Packages Below</span>
+            <ChevronDown className="w-4 h-4" />
           </div>
         </div>
       </section>
 
-      {/* 5. THE PACKAGES (SILVER VS GOLD) */}
+      {/* 5. THE PACKAGES (SILVER VS GOLD & EXPANDED CURRICULUM) */}
       <section id="packages" className="py-20 md:py-28 px-4 bg-[#FAF8F5] dark:bg-[#0b1320] transition-colors duration-300">
         <div className="max-w-6xl mx-auto">
           
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-amber-700 dark:text-amber-400 font-bold tracking-widest uppercase text-xs md:text-sm font-heading">Official Enrollment Tiers</span>
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <span className="text-amber-700 dark:text-amber-400 font-bold tracking-widest uppercase text-xs md:text-sm font-heading">
+              Complete 12-Module Curriculum & Package Breakdown
+            </span>
             <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mt-2 mb-4 font-heading">
               Select Your Transformation Package
             </h2>
             <p className="text-slate-600 dark:text-slate-300 text-base md:text-lg">
-              Clear, transparent investment options designed for immediate, permanent ROI.
+              Check the packages one by one or compare side-by-side. Both options enroll via a single checkout link.
             </p>
             <div className="w-20 h-1 bg-amber-600 mx-auto mt-4 rounded-full"></div>
           </div>
 
-          {/* Pricing Grid */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-            
-            {/* SILVER PACKAGE */}
-            <div className="bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-3xl p-8 md:p-10 shadow-sm flex flex-col justify-between relative transition-all duration-300 hover:border-amber-500/40">
-              <div>
-                <div className="flex justify-between items-start gap-4 mb-6 pb-6 border-b border-stone-100 dark:border-slate-800">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-heading bg-stone-100 dark:bg-slate-800 px-3 py-1 rounded-full">
-                      Tier 1 • Classroom Mastery
-                    </span>
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mt-3 font-heading">
-                      The Silver Package
-                    </h3>
-                    <p className="text-xs text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wide mt-1">
-                      The Elite Classroom Facilitator
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-400 line-through">₦20,000</p>
-                    <p className="text-3xl font-black text-amber-700 dark:text-amber-400 font-heading">₦10,500</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">One-Time Payment</p>
-                  </div>
-                </div>
+          {/* Interactive Package Switcher Buttons */}
+          <div className="flex flex-wrap justify-center items-center gap-3 mb-12 max-w-2xl mx-auto">
+            <button
+              onClick={() => setActivePackageTab('gold')}
+              className={`px-6 py-3 rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-2 ${
+                activePackageTab === 'gold'
+                  ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30 scale-[1.03]'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-stone-200 dark:border-slate-800 hover:border-amber-500'
+              }`}
+            >
+              <Award className="w-4 h-4" />
+              <span>Gold Package (12 Modules)</span>
+            </button>
 
-                <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6 font-normal">
-                  Your blueprint to reclaiming your time, mastering modern pedagogy, and becoming the indispensable teacher premium schools demand.
-                </p>
+            <button
+              onClick={() => setActivePackageTab('silver')}
+              className={`px-6 py-3 rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-2 ${
+                activePackageTab === 'silver'
+                  ? 'bg-amber-600 text-white shadow-lg shadow-amber-600/30 scale-[1.03]'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-stone-200 dark:border-slate-800 hover:border-amber-500'
+              }`}
+            >
+              <BookOpen className="w-4 h-4" />
+              <span>Silver Package (9 Modules)</span>
+            </button>
 
-                {/* Modules List */}
-                <div className="space-y-3 mb-8">
-                  <p className="font-heading font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                    <BookOpen className="w-4 h-4 text-amber-600" /> Complete 9-Module Curriculum:
+            <button
+              onClick={() => setActivePackageTab('both')}
+              className={`px-6 py-3 rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all duration-300 cursor-pointer flex items-center gap-2 ${
+                activePackageTab === 'both'
+                  ? 'bg-slate-900 text-white dark:bg-slate-800 shadow-lg scale-[1.03]'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-stone-200 dark:border-slate-800 hover:border-amber-500'
+              }`}
+            >
+              <Layers className="w-4 h-4" />
+              <span>Compare Both Side-by-Side</span>
+            </button>
+          </div>
+
+          {/* PACKAGE DISPLAY VIEWS */}
+
+          {/* VIEW 1: GOLD PACKAGE FOCUS (SHOWS ALL 12 MODULES) */}
+          {activePackageTab === 'gold' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-white dark:from-slate-900 dark:to-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 md:p-10 shadow-xl shadow-amber-500/10 mb-10"
+            >
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-amber-200/80 dark:border-slate-800">
+                <div>
+                  <div className="inline-flex items-center gap-1.5 bg-amber-600 text-white text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full font-heading mb-2">
+                    <Sparkles className="w-3.5 h-3.5 fill-white" /> Complete Signature System • Recommended
+                  </div>
+                  <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white font-heading">
+                    The Gold Package
+                  </h3>
+                  <p className="text-sm text-amber-800 dark:text-amber-400 font-bold uppercase tracking-wide mt-1">
+                    The Profitable Teacherpreneur • Complete 12-Module Curriculum
                   </p>
-                  
-                  {[
-                    "Module 1: Foundations of AI-Powered Learning (APL Framework)",
-                    "Module 2: The AI Mindset & Prompt Engineering Mastery",
-                    "Module 3: The AI-Powered Flipped Classroom Architecture",
-                    "Module 4: Automated Lesson Planning & Resource Creation (10-Min Prep)",
-                    "Module 5: Instructional Video Production & AI Mobile Editing",
-                    "Module 6: Advanced AI Research & Zero-Code Web Design",
-                    "Module 7: Gamification & Edutainment Mastery (Sonauto AI & Quizizz)",
-                    "Module 8: Digital Classroom Ecosystem & Cloud Workspace (Drive/Classroom)",
-                    "Module 9: The Business of Teaching & Brand Visibility"
-                  ].map((modText, idx) => (
-                    <div key={idx} className="flex items-start gap-2.5 text-xs md:text-sm text-slate-700 dark:text-slate-300">
-                      <Check className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                      <span>{modText}</span>
+                </div>
+                <div className="text-left md:text-right bg-white dark:bg-slate-850 p-4 rounded-2xl border border-amber-200/60 dark:border-slate-800">
+                  <p className="text-xs text-slate-400 line-through">₦35,000</p>
+                  <p className="text-4xl font-black text-amber-700 dark:text-amber-400 font-heading">₦16,500</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">One-Time Payment</p>
+                </div>
+              </div>
+
+              <p className="text-slate-700 dark:text-slate-300 text-base leading-relaxed mb-8">
+                The Gold Package is our complete signature system designed to elevate you from classroom master to automated digital entrepreneur. Below is the complete 12-module curriculum included in your enrollment:
+              </p>
+
+              {/* ALL 12 MODULES DETAILED LIST */}
+              <div className="space-y-4 mb-10">
+                <h4 className="font-heading font-extrabold text-base uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2 pb-2 border-b border-stone-200 dark:border-slate-800">
+                  <Award className="w-5 h-5 text-amber-600" /> All 12 Signature Curriculum Modules:
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {goldModules.map((module) => (
+                    <div 
+                      key={module.num}
+                      className={`p-5 rounded-2xl border text-left flex flex-col justify-between transition-all ${
+                        module.isGoldOnly 
+                          ? 'bg-amber-500/10 border-amber-400/50 dark:bg-amber-950/40 dark:border-amber-800/60' 
+                          : 'bg-white dark:bg-slate-850 border-stone-200/80 dark:border-slate-800'
+                      }`}
+                    >
+                      <div>
+                        <div className="flex items-center justify-between gap-2 mb-2">
+                          <span className={`text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider font-heading ${
+                            module.isGoldOnly 
+                              ? 'bg-amber-600 text-white' 
+                              : 'bg-stone-100 dark:bg-slate-800 text-amber-800 dark:text-amber-400'
+                          }`}>
+                            Module {module.num}
+                          </span>
+                          {module.isGoldOnly && (
+                            <span className="text-[10px] font-bold text-amber-700 dark:text-amber-300 uppercase tracking-widest">
+                              Exclusive Gold Module
+                            </span>
+                          )}
+                        </div>
+                        <h5 className="font-heading font-bold text-slate-900 dark:text-white text-base mb-2">
+                          {module.title}
+                        </h5>
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                          <strong className="text-slate-800 dark:text-slate-200">Focus:</strong> {module.focus}
+                        </p>
+                      </div>
                     </div>
                   ))}
                 </div>
-
-                {/* Included Benefits */}
-                <div className="bg-stone-50 dark:bg-slate-850 p-5 rounded-2xl border border-stone-200/60 dark:border-slate-800 mb-8 space-y-2">
-                  <p className="font-bold text-xs uppercase text-slate-800 dark:text-slate-200 font-heading">Package Deliverables:</p>
-                  <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600" />
-                    <span>Full Self-Paced Video Curriculum Access</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600" />
-                    <span>Dedicated WhatsApp Community Support</span>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-600 dark:text-slate-400">
-                    <CheckCircle2 className="w-4 h-4 text-amber-600" />
-                    <span>Weekly Live Review & Saturday Q&A Sessions</span>
-                  </div>
-                </div>
               </div>
 
-              {/* Action Button */}
-              <div>
-                <a 
-                  href="https://geacademy.selar.com/papeacademy" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="block w-full py-4 text-center bg-stone-900 hover:bg-slate-800 text-white rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-md cursor-pointer dark:bg-slate-800 dark:hover:bg-slate-700"
-                >
-                  Enroll in Silver Package (₦10,500) 👉
-                </a>
-              </div>
-            </div>
-
-            {/* GOLD PACKAGE (HIGHLIGHTED ULTIMATE TIER) */}
-            <div className="bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-white dark:from-slate-900 dark:to-slate-900 border-2 border-amber-500/80 rounded-3xl p-8 md:p-10 shadow-xl shadow-amber-500/10 flex flex-col justify-between relative transform lg:-translate-y-2">
-              
-              {/* Highlight Badge */}
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-amber-600 text-white text-[11px] font-extrabold uppercase tracking-widest px-4 py-1.5 rounded-full shadow-md font-heading flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 fill-white" /> ULTIMATE TRANSFORMATION • RECOMMENDED
-              </div>
-
-              <div>
-                <div className="flex justify-between items-start gap-4 mb-6 pb-6 border-b border-amber-200/80 dark:border-slate-800 pt-2">
-                  <div>
-                    <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 font-heading bg-amber-100 dark:bg-amber-950/60 px-3 py-1 rounded-full">
-                      Tier 2 • Complete Signature System
-                    </span>
-                    <h3 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mt-3 font-heading">
-                      The Gold Package
-                    </h3>
-                    <p className="text-xs text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wide mt-1">
-                      The Profitable Teacherpreneur
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-slate-400 line-through">₦35,000</p>
-                    <p className="text-3xl font-black text-amber-700 dark:text-amber-400 font-heading">₦16,500</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">One-Time Payment</p>
-                  </div>
-                </div>
-
-                <p className="text-slate-700 dark:text-slate-300 text-sm leading-relaxed mb-6 font-medium">
-                  The complete signature system. Master the classroom, build zero-code web applications, and launch your automated digital product empire.
+              {/* Exclusive Perks */}
+              <div className="bg-amber-500/10 dark:bg-amber-950/40 p-6 rounded-2xl border border-amber-300/50 dark:border-amber-800/50 mb-6">
+                <p className="font-bold text-xs uppercase text-amber-900 dark:text-amber-300 font-heading mb-3">
+                  Included Gold Perks & Deliverables:
                 </p>
-
-                {/* Modules List */}
-                <div className="space-y-3 mb-8">
-                  <p className="font-heading font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2">
-                    <Award className="w-4 h-4 text-amber-600" /> Full 12-Module Signature Curriculum:
-                  </p>
-                  
-                  {[
-                    "Modules 1 to 9 (All Silver Package Core Modules Included)",
-                    "Module 10: AI Content Strategy & Visual Branding",
-                    "Module 11: Zero-Code Web Application Development (Vibe Coding with Google AI Studio)",
-                    "Module 12: Product Packaging, Pricing & Sales Automation (Selar Empire Setup)"
-                  ].map((modText, idx) => (
-                    <div key={idx} className={`flex items-start gap-2.5 text-xs md:text-sm ${idx >= 1 ? 'font-bold text-amber-900 dark:text-amber-300' : 'text-slate-700 dark:text-slate-300'}`}>
-                      <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
-                      <span>{modText}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Included Benefits */}
-                <div className="bg-amber-500/10 dark:bg-amber-950/30 p-5 rounded-2xl border border-amber-300/40 dark:border-amber-800/40 mb-8 space-y-2">
-                  <p className="font-bold text-xs uppercase text-amber-900 dark:text-amber-300 font-heading">Exclusive Gold Perks:</p>
-                  <div className="flex items-center gap-2 text-xs text-slate-800 dark:text-slate-200 font-medium">
-                    <Sparkles className="w-4 h-4 text-amber-600" />
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-800 dark:text-slate-200 font-medium">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
                     <span>Zero-Code Web App Builder Blueprint</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-800 dark:text-slate-200 font-medium">
-                    <Sparkles className="w-4 h-4 text-amber-600" />
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
                     <span>Digital Product & Selar Storefront Setup Guide</span>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-800 dark:text-slate-200 font-medium">
-                    <Sparkles className="w-4 h-4 text-amber-600" />
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
                     <span>VIP Priority WhatsApp Mentorship & Review</span>
                   </div>
                 </div>
               </div>
+            </motion.div>
+          )}
 
-              {/* Action Button */}
-              <div>
-                <a 
-                  href="https://geacademy.selar.com/papeacademy" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="block w-full py-4 text-center bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-xs md:text-sm uppercase tracking-wider transition-all duration-300 shadow-lg shadow-amber-600/30 cursor-pointer"
-                >
-                  Enroll in Gold Package (₦16,500) 👉
-                </a>
+          {/* VIEW 2: SILVER PACKAGE FOCUS */}
+          {activePackageTab === 'silver' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-3xl p-6 md:p-10 shadow-sm mb-10"
+            >
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 pb-6 border-b border-stone-100 dark:border-slate-800">
+                <div>
+                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-heading bg-stone-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+                    Tier 1 • Classroom Mastery
+                  </span>
+                  <h3 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white font-heading mt-2">
+                    The Silver Package
+                  </h3>
+                  <p className="text-sm text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wide mt-1">
+                    The Elite Classroom Facilitator • 9 Core Modules
+                  </p>
+                </div>
+                <div className="text-left md:text-right bg-stone-50 dark:bg-slate-850 p-4 rounded-2xl border border-stone-200/60 dark:border-slate-800">
+                  <p className="text-xs text-slate-400 line-through">₦20,000</p>
+                  <p className="text-4xl font-black text-amber-700 dark:text-amber-400 font-heading">₦10,500</p>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">One-Time Payment</p>
+                </div>
               </div>
-            </div>
 
+              <p className="text-slate-600 dark:text-slate-300 text-base leading-relaxed mb-8">
+                Your blueprint to reclaiming your time, mastering modern pedagogy, and becoming the indispensable teacher premium schools demand. Below are the 9 core modules included:
+              </p>
+
+              {/* SILVER 9 MODULES DETAILED LIST */}
+              <div className="space-y-4 mb-10">
+                <h4 className="font-heading font-extrabold text-base uppercase tracking-wider text-slate-900 dark:text-white flex items-center gap-2 pb-2 border-b border-stone-200 dark:border-slate-800">
+                  <BookOpen className="w-5 h-5 text-amber-600" /> Silver Package 9-Module Curriculum:
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {silverModules.map((module) => (
+                    <div 
+                      key={module.num}
+                      className="p-5 rounded-2xl bg-stone-50 dark:bg-slate-850 border border-stone-200/80 dark:border-slate-800 text-left flex flex-col justify-between"
+                    >
+                      <div>
+                        <span className="text-xs font-bold px-2.5 py-0.5 rounded-full uppercase tracking-wider font-heading bg-stone-200 dark:bg-slate-800 text-amber-800 dark:text-amber-400 mb-2 inline-block">
+                          Module {module.num}
+                        </span>
+                        <h5 className="font-heading font-bold text-slate-900 dark:text-white text-base mb-2">
+                          {module.title}
+                        </h5>
+                        <p className="text-xs md:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                          <strong className="text-slate-800 dark:text-slate-200">Focus:</strong> {module.focus}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Silver Deliverables */}
+              <div className="bg-stone-50 dark:bg-slate-850 p-6 rounded-2xl border border-stone-200/60 dark:border-slate-800 mb-6">
+                <p className="font-bold text-xs uppercase text-slate-800 dark:text-slate-200 font-heading mb-3">
+                  Included Silver Deliverables:
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-slate-600 dark:text-slate-400">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                    <span>Full Self-Paced Video Curriculum Access</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                    <span>Dedicated WhatsApp Community Support</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4 text-amber-600 flex-shrink-0" />
+                    <span>Weekly Live Review & Saturday Q&A Sessions</span>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* VIEW 3: BOTH SIDE-BY-SIDE */}
+          {activePackageTab === 'both' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mb-10"
+            >
+              {/* SILVER CARD */}
+              <div className="bg-white dark:bg-slate-900 border border-stone-200 dark:border-slate-800 rounded-3xl p-6 md:p-8 shadow-sm flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-start gap-4 mb-6 pb-6 border-b border-stone-100 dark:border-slate-800">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 font-heading bg-stone-100 dark:bg-slate-800 px-3 py-1 rounded-full">
+                        Tier 1 • Classroom Mastery
+                      </span>
+                      <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white mt-3 font-heading">
+                        Silver Package
+                      </h3>
+                      <p className="text-xs text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wide mt-1">
+                        9 Core Modules
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-400 line-through">₦20,000</p>
+                      <p className="text-3xl font-black text-amber-700 dark:text-amber-400 font-heading">₦10,500</p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    Master modern pedagogy, reclaim your time, and transform into an indispensable classroom facilitator.
+                  </p>
+
+                  <div className="space-y-3 mb-6">
+                    <p className="font-heading font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white">
+                      Curriculum Covered (Modules 1-9):
+                    </p>
+                    {silverModules.map(m => (
+                      <div key={m.num} className="bg-stone-50 dark:bg-slate-850 p-3 rounded-xl border border-stone-200/60 dark:border-slate-800 text-xs">
+                        <p className="font-bold text-slate-900 dark:text-white mb-0.5">Module {m.num}: {m.title}</p>
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px] leading-tight">{m.focus}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* GOLD CARD */}
+              <div className="bg-gradient-to-b from-amber-500/10 via-amber-500/5 to-white dark:from-slate-900 dark:to-slate-900 border-2 border-amber-500/80 rounded-3xl p-6 md:p-8 shadow-xl flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-start gap-4 mb-6 pb-6 border-b border-amber-200/80 dark:border-slate-800">
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-wider text-amber-800 dark:text-amber-400 font-heading bg-amber-100 dark:bg-amber-950/60 px-3 py-1 rounded-full">
+                        Tier 2 • Complete Signature System
+                      </span>
+                      <h3 className="text-2xl font-extrabold text-slate-900 dark:text-white mt-3 font-heading">
+                        Gold Package
+                      </h3>
+                      <p className="text-xs text-amber-700 dark:text-amber-400 font-bold uppercase tracking-wide mt-1">
+                        All 12 Modules Included
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs text-slate-400 line-through">₦35,000</p>
+                      <p className="text-3xl font-black text-amber-700 dark:text-amber-400 font-heading">₦16,500</p>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
+                    Master the classroom, build zero-code web applications, and launch your automated digital product empire.
+                  </p>
+
+                  <div className="space-y-3 mb-6">
+                    <p className="font-heading font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white">
+                      All 12 Modules Covered:
+                    </p>
+                    {goldModules.map(m => (
+                      <div 
+                        key={m.num} 
+                        className={`p-3 rounded-xl border text-xs ${
+                          m.isGoldOnly 
+                            ? 'bg-amber-500/10 border-amber-400/40 dark:bg-amber-950/40' 
+                            : 'bg-white dark:bg-slate-850 border-stone-200/60 dark:border-slate-800'
+                        }`}
+                      >
+                        <p className="font-bold text-slate-900 dark:text-white mb-0.5 flex justify-between items-center">
+                          <span>Module {m.num}: {m.title}</span>
+                          {m.isGoldOnly && <span className="text-[9px] uppercase tracking-widest text-amber-700 dark:text-amber-300 font-bold">Gold Only</span>}
+                        </p>
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px] leading-tight">{m.focus}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* SINGLE UNIFIED CHECKOUT CTA BUTTON UNDER PACKAGES */}
+          <div className="text-center max-w-2xl mx-auto mt-6">
+            <a 
+              href="https://geacademy.selar.com/papeacademy" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="block w-full py-5 px-8 text-center bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-base md:text-lg uppercase tracking-wider transition-all duration-300 shadow-xl shadow-amber-600/30 cursor-pointer flex items-center justify-center gap-3 hover:scale-[1.02]"
+            >
+              <span>Enroll Now on Selar (Access Silver or Gold Package)</span>
+              <ArrowRight className="w-5 h-5" />
+            </a>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+              Instant access upon secure checkout on Selar. Supports international cards and mobile money.
+            </p>
           </div>
 
           {/* Direct Bank Transfer Information Card */}
@@ -494,7 +740,7 @@ export default function App() {
             <div className="flex flex-col md:flex-row justify-between items-center gap-6">
               <div className="text-left">
                 <span className="text-xs font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400 font-heading">
-                  🇳🇬 Alternative Direct Bank Transfer (Nigeria)
+                  Alternative Direct Bank Transfer (Nigeria)
                 </span>
                 <h4 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white mt-1 font-heading">
                   Prefer Direct Bank Transfer over Selar Card Payment?
@@ -577,9 +823,10 @@ export default function App() {
               href="https://geacademy.selar.com/papeacademy" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-sm uppercase tracking-wider transition-all duration-300 shadow-xl shadow-amber-600/30 text-center"
+              className="w-full sm:w-auto px-8 py-4 bg-amber-600 hover:bg-amber-700 text-white rounded-full font-bold text-sm uppercase tracking-wider transition-all duration-300 shadow-xl shadow-amber-600/30 text-center flex items-center justify-center gap-2"
             >
-              Enroll on Selar Now 👉
+              <span>Enroll on Selar Now</span>
+              <ArrowRight className="w-4 h-4" />
             </a>
             <a 
               href="https://wa.link/6685ik" 
